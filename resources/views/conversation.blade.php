@@ -41,8 +41,6 @@
                         <h6 class="text-truncate mb-0">{{ $contact_details->name }}</h6>
                         {{-- <small class="text-muted">Online</small> --}}
                     </div>
-
-                    <button class="btn" type="button" id="connectMetaMaskbtn" onclick="connectMetaMask()">Connect MetaMask</button>
                 </div>
 
 
@@ -233,13 +231,10 @@
 
                                                         <!-- Alternate :: External File link -->
                                                         <!-- <img class="injectable hw-20 mr-2" src="./../assets/media/heroicons/outline/photograph.svg" alt=""> -->
-                                                        <span><input type="file" class="hide_file" name="files"
-                                                                onchange="readURL(this);" id="image"
-                                                                style="display: none;">
-                                                            Gallery</span>
+                                                        <span>Gallery</span>
                                                     </a>
                                                 </div>
-
+                                                 <input type="file" class="hide_file" name="files" onchange="readURL(this);" id="image" style="display: none;">
                                             </div>
                                         </div>
                                     </div>
@@ -522,7 +517,7 @@
 
     {{-- </main> --}}
 
-
+@endsection
     {{-- <script>
         var audioChunks;
         startRecord.onclick = (e) => {
@@ -565,54 +560,7 @@
         };
     </script> --}}
 
-    @push('custom_js')
-        <script>
-            async function connectMetaMask() {
-                // Detect MetaMask provider
-                const provider = await detectEthereumProvider();
-
-                if (provider) {
-                    try {
-                        // Request user accounts
-                        const accounts = await ethereum.request({
-                            method: 'eth_requestAccounts'
-                        });
-                        console.log('Connected MetaMask account:', accounts[0]);
-                        $('#from_wallet_address').val(accounts[0]);
-                        $('#connectMetaMaskbtn').html('<button type="button"  data-toggle="modal" data-target="#exampleModal" class="btn btn-primary">MetaMask connected make payment</button')
-                        // Here you can perform further actions like authentication or transactions
-                    } catch (error) {
-                        console.error('Error connecting MetaMask:', error);
-                    }
-                } else {
-                    // MetaMask is not installed
-                    console.log('Please install MetaMask to use this feature');
-                }
-            }
-        </script>
-
-        <script>
-            // Example of sending transaction using MetaMask
-            async function sendTransaction() {
-                const accounts = await ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
-                const from = accounts[0];
-                const to = $('#to_wallet_address').val();
-                const amount = $('#amount').val(); // 1 Ether in wei
-
-                await ethereum.request({
-                    method: 'eth_sendTransaction',
-                    params: [{
-                        from,
-                        to,
-                        value: '0x' + amount,
-                    }],
-                });
-            }
-        </script>
-
-
+    @push('custom_js') 
         <script>
             toastr.options = {
                 "closeButton": true,
@@ -655,7 +603,7 @@
                     };
                     var name = document.getElementById('image');
                     x.style.display = "block";
-                    $('#files').val(name.files.item(0).name);
+                    // $('#image').val(name.files.item(0).name);
                     reader.readAsDataURL(input.files[0]);
                 }
             }
@@ -803,4 +751,4 @@
             });
         </script>
     @endpush
-@endsection
+

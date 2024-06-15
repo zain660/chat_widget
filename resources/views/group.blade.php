@@ -339,7 +339,7 @@
                                                             class="text-reset">{{ $member_details->name }}</a>
                                                     </h6>
                                                 </div>
-
+                                                @if($members->participant_id != Auth::user()->id)
                                                 <div class="media-options ml-1">
                                                     <div class="dropdown">
                                                         <button
@@ -355,22 +355,25 @@
                                                             </svg>
                                                             <!-- <img class="injectable hw-20" src="./../assets/media/heroicons/outline/dots-vertical.svg" alt=""> -->
                                                         </button>
-                                                        <div class="dropdown-menu">
-                                                            @if ($group_details->group_host == Auth::user()->id)
+                                                         
+                                                            <div class="dropdown-menu">
+                                                               
+                                                                @if ($group_details->group_host == Auth::user()->id)
+                                                                    <a class="dropdown-item"
+                                                                        href="/make_host/{{ $member_details->id }}/{{ $group_details->id }}">Make
+                                                                        host</a>
+                                                                    <a class="dropdown-item"
+                                                                        href="/kick_out/{{ $member_details->id }}/{{ $group_details->id }}">Kick
+                                                                        out
+                                                                        from
+                                                                        group</a>
+                                                                @endif
                                                                 <a class="dropdown-item"
-                                                                    href="/make_host/{{ $member_details->id }}/{{ $group_details->id }}">Make
-                                                                    host</a>
-                                                                <a class="dropdown-item"
-                                                                    href="/kick_out/{{ $member_details->id }}/{{ $group_details->id }}">Kick
-                                                                    out
-                                                                    from
-                                                                    group</a>
-                                                            @endif
-                                                            <a class="dropdown-item"
-                                                                href="/Conversation/{{ $member_details->id }}/{{ str_replace(' ', '-', $member_details->name) }}">Message</a>
-                                                        </div>
+                                                                    href="/Conversation/{{ $member_details->id }}/{{ str_replace(' ', '-', $member_details->name) }}">Message</a>
+                                                            </div> 
                                                     </div>
                                                 </div>
+                                                @endif
                                             </div>
                                         </li>
 
@@ -589,7 +592,7 @@
                 var block =
                     ' <div class="message self"><div class="message-wrapper"><div class="message-content"><span> ' +
                     snapshot.val().text + '</span>' + image_tag +
-                    '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="/assets/media/avatar/8.png"></div><span class="message-date">' +
+                    '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="{{ asset("/assets/media/avatar") }}/{{ Auth::user()->avatar ?? 'avatar.png' }}"></div><span class="message-date">' +
                     snapshot.val().date + '</span></div></div> ';
 
                 $("#message-container").append(block);
@@ -601,7 +604,7 @@
                 var block2 =
                     '<div class="message"><div class="message-wrapper"><div class="message-content"><span>' +
                     snapshot.val().text + '</span>' + image_tag +
-                    '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="/assets/media/avatar/8.png"></div><span class="message-date">' +
+                    '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="{{ asset("/assets/media/avatar") }}/'+snapshot.val().sender_user_avatar+'"></div><span class="message-date">' +
                     snapshot.val().date + '</span></div></div> ';
                 $("#message-container").append(block2);
                 window.scrollTo(0, document.body.scrollHeight);

@@ -265,7 +265,7 @@
                                                         processData: false,
 
                                                         success: function(response) {
-
+                                                            location.reload();
                                                         }
                                                     });
                                                 }
@@ -348,10 +348,10 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
 
         @include('layouts.include.script')
-      
+              @include('layouts.include.sweetalert')
+
     
         {{-- seek quality muscle subject size churn van filter auction onion depth ugly --}}
         @stack('custom_js')

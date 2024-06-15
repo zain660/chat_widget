@@ -5,7 +5,7 @@
         Swal.fire({
             title: 'Success',
             icon: 'success',
-            text: "{{ session('Success') }}",
+            text: "{{ session('success') }}",
         })
     @endif
 

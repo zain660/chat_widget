@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/clear-cache', function () {
+    // Clear all caches
+    Artisan::call('optimize:clear');
+    
+    // Optionally, return a response
+    return 'Cache cleared successfully!';
+});
 Route::get('/', function () {
     return redirect('/home');
 });
@@ -22,9 +28,11 @@ Route::post('/login_post', [App\Http\Controllers\Auth\LoginController::class, 'l
 
 Route::post('/save_device_token', [App\Http\Controllers\HomeController::class, 'save_device_token'])->name('save_device_token');
 Route::get('/sendNotification', [App\Http\Controllers\HomeController::class, 'sendNotification'])->name('sendNotification');
+Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'update_profile'])->name('user.update_profile');
 
+Route::get('/get_users_list/{name}', [App\Http\Controllers\HomeController::class, 'get_users_list'])->name('get_users_list');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/Conversation/{id}/{name}', [App\Http\Controllers\HomeController::class, 'conversation'])->name('Conversation/{id}/{name}');
+Route::get('/Conversation/{id}/{name}', [App\Http\Controllers\HomeController::class, 'conversation'])->name('Conversation');
 Route::post('/send_message/{id}', [App\Http\Controllers\HomeController::class, 'send_message'])->name('send_message/{id}');
 Route::get('/block/{id}', [App\Http\Controllers\HomeController::class, 'block'])->name('block/{id}');
 Route::get('/unblock/{id}', [App\Http\Controllers\HomeController::class, 'unblock'])->name('unblock/{id}');
@@ -46,6 +54,7 @@ Route::post('/update_profile_info', [App\Http\Controllers\HomeController::class,
 // ADMIN ROUTES
 Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/all-users', [App\Http\Controllers\AdminController::class, 'all_users'])->name('admin.allusers');
+Route::post('/admin/create_user', [App\Http\Controllers\AdminController::class, 'create_user'])->name('admin.create_user');
 
 Route::get('/admin/deactive_user/{id}', [App\Http\Controllers\AdminController::class, 'deactive_user'])->name('admin.deactive_user');
 Route::get('/admin/active_user/{id}', [App\Http\Controllers\AdminController::class, 'active_user'])->name('admin.active_user');
@@ -61,7 +70,7 @@ Route::post('/admin/update_packages/{id}', [App\Http\Controllers\AdminController
 
 Route::Get('/admin/UserChat', [App\Http\Controllers\AdminController::class, 'UserChat'])->name('admin.UserChat');
 
-Route::get('/admin/UserChat/{id}', [App\Http\Controllers\AdminController::class, 'Chat_conv'])->name('admin.chat_conv');
+Route::get('/admin/UserConv/{id}', [App\Http\Controllers\AdminController::class, 'Chat_conv'])->name('admin.chat_conv');
 
 Route::get('/admin/chats/{id}', [App\Http\Controllers\AdminController::class, 'chats'])->name('admin.chats');
 

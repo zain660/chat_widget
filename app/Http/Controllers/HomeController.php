@@ -14,6 +14,8 @@ use App\Models\Subscribed;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Carbon\Carbon;
 use App\Models\Packages;
+use Illuminate\Support\Facades\Hash;
+
 class HomeController extends Controller
 {
     /**
@@ -24,6 +26,58 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    
+    public function get_users_list(Request $request){
+        
+        $get_user = User::where('name','LIKE','%'.$request->name.'%')
+        ->where('name', '!=',auth()->user()->name )->get();
+        if($get_user->count() > 0){
+            return response()->json([
+                'users' => $get_user
+            ]);
+        }else{
+             return response()->json([
+                'users' => 'Nousersfound'
+            ]);
+        }
+        
+    }
+    
+    public function update_profile(Request $request){
+            
+            if($request->has('password_update')){
+                
+                // dd(Hash::check($request->c_password, auth()->user()->password));
+                 if(Hash::check($request->c_password, auth()->user()->password)){
+                     if($request->n_password == $request->r_password){
+                         
+                         User::where('id',auth()->user()->id)->update(array(
+                                'password' => Hash::make($request->r_password)
+                         ));
+                        return redirect()->back()->with('success','Your password has been updated.');
+                     }else{
+                        return redirect()->back()->with('error','New password does not match your Re-peat password.');
+                     }
+                     
+                     
+                 }else{
+                    return redirect()->back()->with('error','Your old password is wrong.');
+                 }
+                
+            }else{
+                 
+                User::where('id',auth()->user()->id)->update(array(
+                    'name' => $request->name,
+                    // 'email' => $request->email,
+                    'phone' => $request->phone
+                ));
+                
+                return redirect()->back()->with('success','Profile has been updated.');
+            }
+            
+            // dd($request->all());
+       
     }
 
     /**
@@ -277,13 +331,13 @@ class HomeController extends Controller
         return redirect('/home');
     }
 
-    public function make_host($id,$member_id){
+    public function make_host($member_id, $id){
 
         Group::where('id',$id)->update(array(
             'group_host'=>$member_id
         ));
 
-        return redirect()->back();
+        return redirect()->back()->with('success','Group host was changed');
     }
 
     public function kick_out($member_id,$id){
@@ -297,12 +351,12 @@ class HomeController extends Controller
 
 
     public function send_message_to_group(Request $request,$id){
-
+        // dd($request->all());
         $group_details = Group::where('id',$id)->first();
 
-           if($request->hasFile('files')){
+           if($request->hasFile('image_file_choosen')){
 
-                $attechment  = $request->file('files');
+                $attechment  = $request->file('image_file_choosen');
 
                     $img_2 =  time().$attechment->getClientOriginalName();
                     $attechment->move(public_path('message_media'),$img_2);
@@ -324,6 +378,7 @@ class HomeController extends Controller
 
                     elseif($extention == "jpeg"){
                         $type = 'image';
+                        
                     }else{
 
                         $type = "document";
@@ -333,7 +388,17 @@ class HomeController extends Controller
             'group_last_message' => $request->message,
             'last_msg_nam' => $request->last_msg_from,
         ));
-         $this->send_group_message(['group_id'=>$id,'group_name' => $group_details->group_name,'message'=>$request->message,'file_type'=>$type ?? '','link'=>'/Group/'.$id.'/'.str_replace(" ","-",$group_details->name).' ','files'=>$img_2 ?? '']);
+        
+        // dd($id, $group_details->group_name, $request->message, $type, $img_2);
+         $this->send_group_message([
+             'group_id'=>$id,
+             'group_name' => $group_details->group_name,
+             'message'=>$request->message,
+             'sender_user_avatar' => auth()->user()->avatar,
+             'file_type'=>$type ?? '',
+             'link'=>'/Group/'.$id.'/'.str_replace(" ","-",$group_details->name).' ',
+             'files'=>$img_2 ?? ''
+             ]);
 
     }
 

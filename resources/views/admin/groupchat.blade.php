@@ -4,36 +4,131 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        @foreach ($chatgroup as $item)
-        <h1 class="h3 mb-0 text-gray-800">Messages</h1>
-        <h1 class="h4 mb-0 text-gray-800">Date/Time: {{$item->updated_at->format('d-m-y')}}</h1>
-
+        <h1 class="h3 mb-0 text-gray-800">{{$chatgroup->group_name}} Group conversation </h1>
+        <h1 class="h4 mb-0 text-gray-800">Date/Time: {{$chatgroup->updated_at->diffForHumans()}}</h1>
+        <br>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">View all participants</button>
     </div>
-        <table class="table">
+        <table class="table" id="message-container">
             <thead>
             <tr>
-                <th scope="col">Group Name</th>
-                <th scope="col">Message</th>
-                
-                
+                <th>Sender</th>
+                <th>Message</th>
+                <th>Message time</th>
+                <th>Message Contain File?</th>
+                <th>File</th> 
             </tr>
             </thead>
             <tbody>
-             
-                    <tr>
-                        
-                            <td>{{$item->group_name}}</td>
-                        <td>{{$item->group_last_message}}</td>
-                        
-                        
-                        
-                    </tr> 
-                   
-            </tbody>
-        </table>
 
-        @endforeach
-        
-    
+            </tbody>
+        </table>  
     </div>
+    
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">All participant</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          @if($usergroup->count() > 0)
+            <div class="row">
+                @foreach($usergroup as $usergroups)
+                    @php
+                        $participants = App\Models\User::where('id', $usergroups->participant_id)->first();
+                    @endphp
+                    <div class="col-4">
+                        {{$participants->name}}
+                        <br>
+                        <p>{{$participants->email}}</p>
+                    </div>
+                        <!--<p>{{$participants->email}}</p>-->
+                    <div class="col-8 d-flex justify-content-end"><a href="" class="btn btn-primary">Initiate Chat</a></div>
+                    <br>
+                    <br>
+                    
+                @endforeach    
+           </div>    
+            @else
+                No participants found.
+          @endif
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
+ 
+
+@push('custom_js')
+  <script>
+            var reff = firebase.database().ref("group_id_{{ $chatgroup->id }}/group_messages");
+            reff.on('child_added', function(snapshot) {
+  
+                var image_tag = "";
+                if (snapshot.val().files == "") {
+
+                    image_tag = "";
+                } else if (snapshot.val().file_type == "image") {
+
+                    var recent_images =
+                        '<div class="col-4 col-md-2 col-xl-4"><a href="#"><img src="{{ asset('/message_media') }}/' +
+                        snapshot.val().files + '" class="img-fluid rounded border" alt="" style="width:90px"></a></div>';
+
+                    $("#shared-media").append(recent_images);
+
+                    image_tag = '<a class="popup-media" href="{{ asset('/message_media') }}/' + snapshot.val()
+                        .files +
+                        '"><img class="img-fluid rounded" src="{{ asset('/message_media') }}/' + snapshot.val()
+                        .files +
+                        '" style="width:90px"></a>';
+
+                } else if (snapshot.val().file_type == "video") {
+
+                    var recent_images =
+                        '<div class="col-4 col-md-2 col-xl-4"><a href="#"><video class="img-fluid rounded border" width="400" controls><source src="{{ asset('/message_media') }}/' +
+                        snapshot.val().files + '" type="video/mp4"><source src="{{ asset('/message_media') }}/' +
+                        snapshot.val().files + '" type="video/ogg"></video></a></div>';
+
+                    $("#shared-media").append(recent_images);
+
+                    image_tag =
+                        '   <div class="document"><div class="btn btn-primary btn-icon rounded-circle text-light mr-2"><svg class="hw-24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg></div><div class="document-body"><h6><a href="#" class="text-reset" title="' +
+                        snapshot.val().files + '">' + snapshot.val().files + '</a></h6></div></div>';
+
+                } else if (snapshot.val().file_type == "document") {
+                    var recent_docs =
+                        '<li class="list-group-item"><div class="document"><div class="btn btn-primary btn-icon rounded-circle text-light mr-2"><svg class="hw-24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg> </div><div class="document-body"><h6 class="text-truncate"><a href="#" class="text-reset" title="' +
+                        snapshot.val().files + '">' + snapshot.val().files +
+                        '</a></h6><ul class="list-inline small mb-0"><li class="list-inline-item"><span class="text-muted text-uppercase">docs</span></li></ul></div><div class="document-options ml-1"><div class="dropdown"><button class="btn btn-secondary btn-icon btn-minimal btn-sm text-muted" type="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg class="hw-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg> </button><div class="dropdown-menu"><a class="dropdown-item" href="{{ asset('/message_media') }}/' +
+                        snapshot.val().files + '" download="{{ asset('/message_media') }}/' + snapshot.val().files +
+                        '">Download</a></div></div></div></div></li>';
+
+
+                    image_tag =
+                        '<div class="document"><div class="btn btn-primary btn-icon rounded-circle text-light mr-2"><svg class="hw-24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg></div><div class="document-body"><h6><a href="#" download="{{ asset('/message_media') }}/' + snapshot.val().files+'" class="text-reset" title="' +
+                        snapshot.val().files + '">' + snapshot.val().files + '</a></h6></div></div>';
+                    $("#shared-docs").append(recent_docs);
+                } 
+                    if(snapshot.val().files == ""){
+                        var have_file = '<div class="badge badge-warning">No</div>';
+                    }else{
+                        var have_file = '<div class="badge badge-success">Yes</div>';
+                    }
+                    var block =
+                        '<tr><th scope="row">'+snapshot.val().sender_name+'</th><td>'+snapshot.val().text+'</td><td>'+snapshot.val().date+'</td><td>'+have_file+'</td><td>'+image_tag+'</td></tr> ';
+
+                    $("#message-container").append(block);
+                    // window.scrollTo(0, document.body.scrollHeight);
+
+ 
+            });
+        </script>
+@endpush

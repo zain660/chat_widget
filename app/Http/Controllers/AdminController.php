@@ -9,6 +9,8 @@ use App\Models\ChatConvo;
 use App\Models\GroupParticipant;
 use App\Models\Group;
 use App\Models\Subscribed;
+use Illuminate\Support\Facades\Hash;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -22,6 +24,26 @@ class AdminController extends Controller
         $earning = Subscribed::all();
       
         return view('admin.home',get_defined_vars());
+    }
+    
+    
+    public function create_user(Request $request){
+        $user = new User;
+        
+        if($request->has('avatar')){
+             $attechment  = $request->file('avatar');
+             $img_2 =  time().$attechment->getClientOriginalName();
+            $attechment->move(public_path('assets/media/avatar'),$img_2);
+        }
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->password = Hash::make('12345678');
+        $user->avatar = $img_2 ?? 'avatar.png';
+        $user->save();
+        
+        return redirect()->route('admin.allusers')->with('success','User account created Successfuly');
+
     }
 
     public function all_users(){
@@ -106,23 +128,36 @@ class AdminController extends Controller
 
    public function Userchat(){
     $userChat = User::where('id', '!=',Auth::user()->id)->paginate(10);
-            return view('admin.userChat',get_defined_vars());
+            return view('admin.UserChat',get_defined_vars());
    } 
 
    Public Function Chat_conv($id){
-       $ChatConvo = chatConvo::Where('Sender_id' , $id)->orwhere('reciever_id', $id)->paginate(10);
-        return view('admin.chat_conv',get_defined_vars());
+       $ChatConvo = chatConvo::where('sender_id' , $id)->orwhere('reciever_id', $id)->paginate(10);
+    //   dd($ChatConvo, $id);
+        $chat_user = User::find($id);
+        foreach ($ChatConvo as $item){
+            if($item->sender_id == $id){
+                    $user = User::where('id',$item->reciever_id)->first();
+            }else{
+                    $user = User::where('id',$item->sender_id)->first();
+            }
+                        
+        }
+        
+        $convo_between = $chat_user->name .' & '. $user->name;
+        // dd($convo_between);
+        return view('admin.Chat_conv',get_defined_vars());
    }
 
    public function Chats($id){
-    $chats = chatConvo::where('id',$id)->paginate(10);
+    $chats = chatConvo::where('id',$id)->first();
 
-    return view('admin.chats',get_defined_vars());
+    return view('admin.Chats',get_defined_vars());
    }
 
    public function Allusergroup(){
     $allusergroup = User::where('id', '!=',Auth::user()->id)->paginate(10);
-            return view('admin.Alluser_group',get_defined_vars());
+            return view('admin.AllUser_group',get_defined_vars());
    } 
 
    public function usergroup($id){
@@ -133,7 +168,9 @@ class AdminController extends Controller
    }
 
    public function groupchat($id){
-    $chatgroup = Group::where('id',$id)->paginate(10);
+    $chatgroup = Group::where('id',$id)->first();
+        $usergroup = GroupParticipant::where('group_id',$id)->get();
+
     return view('admin.groupchat',get_defined_vars());
    }
 

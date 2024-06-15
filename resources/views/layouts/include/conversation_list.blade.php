@@ -344,26 +344,7 @@
 
 
                                            <!-- List Group Item Start -->
-                                           <li class="list-group-item py-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Birthdate</p>
-                                                       <p class="mb-0" id="dob">
-                                                           {{ Auth::user()->dob ?? 'N/A' }}</p>
-                                                   </div>
-                                                   <!-- Default :: Inline SVG -->
-                                                   <svg class="text-muted hw-20 ml-1" fill="none"
-                                                       viewBox="0 0 24 24" stroke="currentColor">
-                                                       <path stroke-linecap="round" stroke-linejoin="round"
-                                                           stroke-width="2"
-                                                           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                   </svg>
-
-                                                   <!-- Alternate :: External File link -->
-                                                   <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/heroicons/outline/calendar.svg" alt=""> -->
-                                               </div>
-                                           </li>
-                                           <!-- List Group Item End -->
+                                          
 
                                            <!-- List Group Item Start -->
                                            <li class="list-group-item py-2">
@@ -409,51 +390,7 @@
                                                </div>
                                            </li>
                                            <!-- List Group Item End -->
-
-                                           <!-- List Group Item Start -->
-                                           <li class="list-group-item py-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Website</p>
-                                                       <p class="mb-0" id="website">
-                                                           {{ Auth::user()->website ?? 'N/A' }}</p>
-                                                   </div>
-                                                   <!-- Default :: Inline SVG -->
-                                                   <svg class="text-muted hw-20 ml-1" fill="none"
-                                                       viewBox="0 0 24 24" stroke="currentColor">
-                                                       <path stroke-linecap="round" stroke-linejoin="round"
-                                                           stroke-width="2"
-                                                           d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                   </svg>
-
-                                                   <!-- Alternate :: External File link -->
-                                                   <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/heroicons/outline/globe.svg" alt=""> -->
-                                               </div>
-                                           </li>
-                                           <!-- List Group Item End -->
-
-                                           <!-- List Group Item Start -->
-                                           <li class="list-group-item pt-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Address</p>
-                                                       <p class="mb-0" id="address">
-                                                           {{ Auth::user()->address ?? 'N/A' }}</p>
-                                                   </div>
-                                                   <!-- Default :: Inline SVG -->
-                                                   <svg class="text-muted hw-20 ml-1" fill="none"
-                                                       viewBox="0 0 24 24" stroke="currentColor">
-                                                       <path stroke-linecap="round" stroke-linejoin="round"
-                                                           stroke-width="2"
-                                                           d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                                   </svg>
-
-                                                   <!-- Alternate :: External File link -->
-                                                   <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/heroicons/outline/home.svg" alt=""> -->
-                                               </div>
-                                           </li>
-                                           <!-- List Group Item End -->
-
+  
                                        </ul>
                                        <!-- List Group End -->
 
@@ -461,57 +398,57 @@
                                    <!-- Card End -->
 
                                    <!-- Card Start -->
-                                   <div class="card my-3">
+                                   <!--<div class="card my-3">-->
 
                                        <!-- List Group Start -->
-                                       <ul class="list-group list-group-flush">
+                                   <!--    <ul class="list-group list-group-flush">-->
 
                                            <!-- List Group Item Start -->
-                                           <li class="list-group-item py-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Facebook</p>
-                                                       <a class="font-size-sm font-weight-medium"
-                                                           href="#">{{ Auth::user()->facebook ?? 'N/A' }}</a>
-                                                   </div>
+                                   <!--        <li class="list-group-item py-2">-->
+                                   <!--            <div class="media align-items-center">-->
+                                   <!--                <div class="media-body">-->
+                                   <!--                    <p class="small text-muted mb-0">Facebook</p>-->
+                                   <!--                    <a class="font-size-sm font-weight-medium"-->
+                                   <!--                        href="#">{{ Auth::user()->facebook ?? 'N/A' }}</a>-->
+                                   <!--                </div>-->
                                                    <!-- Alternate :: External File link -->
                                                    <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/icons/facebook.svg" alt=""> -->
-                                               </div>
-                                           </li>
+                                   <!--            </div>-->
+                                   <!--        </li>-->
                                            <!-- List Group Item End -->
 
                                            <!-- List Group Item Start -->
-                                           <li class="list-group-item py-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Youtube</p>
-                                                       <a class="font-size-sm font-weight-medium"
-                                                           href="#">{{ Auth::user()->youtube ?? 'N/A' }}</a>
-                                                   </div>
+                                   <!--        <li class="list-group-item py-2">-->
+                                   <!--            <div class="media align-items-center">-->
+                                   <!--                <div class="media-body">-->
+                                   <!--                    <p class="small text-muted mb-0">Youtube</p>-->
+                                   <!--                    <a class="font-size-sm font-weight-medium"-->
+                                   <!--                        href="#">{{ Auth::user()->youtube ?? 'N/A' }}</a>-->
+                                   <!--                </div>-->
                                                    <!-- Alternate :: External File link -->
                                                    <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/icons/twitter.svg" alt=""> -->
-                                               </div>
-                                           </li>
+                                   <!--            </div>-->
+                                   <!--        </li>-->
                                            <!-- List Group Item End -->
 
                                            <!-- List Group Item Start -->
-                                           <li class="list-group-item py-2">
-                                               <div class="media align-items-center">
-                                                   <div class="media-body">
-                                                       <p class="small text-muted mb-0">Twitch</p>
-                                                       <a class="font-size-sm font-weight-medium"
-                                                           href="#">{{ Auth::user()->twitch ?? 'N/A' }}</a>
-                                                   </div>
+                                   <!--        <li class="list-group-item py-2">-->
+                                   <!--            <div class="media align-items-center">-->
+                                   <!--                <div class="media-body">-->
+                                   <!--                    <p class="small text-muted mb-0">Twitch</p>-->
+                                   <!--                    <a class="font-size-sm font-weight-medium"-->
+                                   <!--                        href="#">{{ Auth::user()->twitch ?? 'N/A' }}</a>-->
+                                   <!--                </div>-->
                                                    <!-- Alternate :: External File link -->
                                                    <!-- <img class="injectable text-muted hw-20 ml-1" src="./../assets/media/icons/instagram.svg" alt=""> -->
-                                               </div>
-                                           </li>
+                                   <!--            </div>-->
+                                   <!--        </li>-->
                                            <!-- List Group Item End -->
 
-                                       </ul>
+                                   <!--    </ul>-->
                                        <!-- List Group End -->
 
-                                   </div>
+                                   <!--</div>-->
                                    <!-- Card End -->
 
                                </div>

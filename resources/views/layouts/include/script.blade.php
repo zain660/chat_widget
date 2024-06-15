@@ -54,8 +54,6 @@ $('#create_group_form').submit(function(e) {
             console.log(response.code);
             if (response.code == null) {
                 $('#heading').html('Group did not created');
-            }else{
-                location.reload();
             }
         }
     });

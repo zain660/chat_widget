@@ -165,7 +165,7 @@ public function send_group_message($data = [] ){
        $user = User::find(Auth::id());
          $ch = curl_init();
           $carbon = Carbon::now();
-           $data_json = '{"text": "'.$data['message'].'","sender_name": "'.Auth::user()->name.'","sender_id":"'.Auth::user()->id.'","file_type": "'.$data['file_type'].'" ,"files": "'.$data['files'].'","date": "'.$carbon->format('d-m-Y h:i A').'"}';
+           $data_json = '{"text": "'.$data['message'].'","sender_name": "'.Auth::user()->name.'","sender_id":"'.Auth::user()->id.'","sender_user_avatar":"'.$data['sender_user_avatar'].'","file_type": "'.$data['file_type'].'" ,"files": "'.$data['files'].'","date": "'.$carbon->format('d-m-Y h:i A').'"}';
             // array_push($return_array, [$user_sec => $data_json]);
             curl_setopt($ch, CURLOPT_URL, "https://hippacompliant-6c5ef-default-rtdb.firebaseio.com/group_id_".$data['group_id']."/group_messages/".$carbon->format('YmdGis').".json");
            $server_key ='AIzaSyBYdmaLCYwLqeU-Ud8G2T6Dnww5eS_a8II';

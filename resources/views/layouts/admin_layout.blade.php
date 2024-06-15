@@ -146,7 +146,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">System Admin</span>
-                                <img class="img-profile rounded-circle" src="{{asset('/admin/img/undraw_profile.svg')}}">
+                                <img class="img-profile rounded-circle" src="{{ asset('/assets/media/avatar') }}/{{ auth()->user()->avatar ?? 'avatar.png' }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -178,6 +178,38 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('/admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/admin/js/demo/chart-pie-demo.js')}}"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+    
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-firestore.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+    
+    <script> 
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYdmaLCYwLqeU-Ud8G2T6Dnww5eS_a8II",
+            databaseURL: "https://hippacompliant-6c5ef-default-rtdb.firebaseio.com",
+            authDomain: "hippacompliant-6c5ef.firebaseapp.com",
+            projectId: "hippacompliant-6c5ef",
+            storageBucket: "hippacompliant-6c5ef.appspot.com",
+            messagingSenderId: "1023196025670",
+            appId: "1:1023196025670:web:0168e6bd37700ab77acb47",
+            measurementId: "G-804ZHKGB3H"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    @stack("custom_js")
 </body>
 
 </html>

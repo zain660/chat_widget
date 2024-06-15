@@ -25,7 +25,7 @@
         @endphp
             @foreach ($userChat as $item)
             <tr>
-                <th scope="row">{{$count ++}}</th>
+                <td scope="row">{{$count ++}}</td>
                 <td>{{$item->name}}</td>
                 <td><img src="{{asset('/assets/media/avatar')}}/{{$item->avatar}}" alt="" class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td>
                 <td>{{$item->email}}</td>
