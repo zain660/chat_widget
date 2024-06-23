@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,11 +66,32 @@ class RegisterController extends Controller
     {
         // dd($data);
 
-        return User::create([
+        // $validator = Validator::make($request->all(), [
+        //     'title' => 'required|unique:posts|max:255',
+        //     'body' => 'required',
+        // ]);
+
+        $company = Company::where('name', $data['company_name'])
+            ->orWhere('company_url', $data['company_url'])->first();
+
+        if (isset($company)) {
+            return back()->with('message','Company Already Exist');
+        }
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'avatar' => 'avatar.png',
+            'phone' => $data['company_phone'],
         ]);
+
+        Company::create([
+            'user_id' => $user->id,
+            'name' => $data['company_name'],
+            'company_url' => $data['company_url'],
+            'company_phone' => $data['company_phone'],
+        ]);
+
+        return $user;        
     }
 }

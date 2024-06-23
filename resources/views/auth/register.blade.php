@@ -82,6 +82,48 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="company_name" class="col-md-4 col-form-label text-md-end">{{ __('Company Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" required>
+
+                                @error('company_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="company_phone" class="col-md-4 col-form-label text-md-end">{{ __('Company Phone') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="company_phone" type="tel" class="form-control @error('company_phone') is-invalid @enderror" name="company_phone" required>
+
+                                @error('company_phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="company_url" class="col-md-4 col-form-label text-md-end">{{ __('Company URL') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="company_url" type="url" class="form-control @error('company_url') is-invalid @enderror" name="company_url" required>
+
+                                @error('company_url')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
