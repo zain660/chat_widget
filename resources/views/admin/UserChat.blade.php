@@ -11,7 +11,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Full Name</th>
-            <th scope="col">Display Picture</th>
+            {{-- <th scope="col">Display Picture</th> --}}
             <th scope="col">Email</th>
             <th scope="col">Account Status</th>
             <th scope="col">Actions</th>
@@ -27,7 +27,7 @@
             <tr>
                 <td scope="row">{{$count ++}}</td>
                 <td>{{$item->name}}</td>
-                <td><img src="{{asset('/assets/media/avatar')}}/{{$item->avatar}}" alt="" class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td>
+                {{-- <td><img src="{{asset('/assets/media/avatar')}}/{{$item->avatar}}" alt="" class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td> --}}
                 <td>{{$item->email}}</td>
                 <td>
                     @if ($item->account_is_active == 1)
@@ -42,7 +42,7 @@
             </tr> 
             @endforeach
 
-            {{$userChat->links()}}
+            
             @else
             <tr>
                 <td>No data found.</td>
@@ -50,5 +50,6 @@
         @endif
         </tbody>
     </table>
+    {{$userChat->links()}}
 </div>
 @endsection

@@ -23,11 +23,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Chat App</div>
             </a>
 
             <!-- Divider -->
@@ -35,7 +35,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('admin.dashboard')}}">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -50,36 +50,34 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="{{ route('admin.allusers') }}">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Users</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                {{-- <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Users Management</h6>
                         <a class="collapse-item" href="{{route('admin.allusers')}}">All Users</a>
                         <a class="collapse-item" href="{{route('admin.deactive_users')}}">Deactive Users</a>
                         <a class="collapse-item" href="{{route('admin.all_active_users')}}">Active Users</a>
                     </div>
-                </div>
+                </div> --}}
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="{{ route('admin.UserChat') }}">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Chats</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                {{-- <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Chats Management:</h6>
                         <a class="collapse-item" href="{{route('admin.UserChat')}}">One to One chat</a>
                         <a class="collapse-item" href="{{route('admin.Allusergroup')}}">Group chats</a>
                     </div>
-                </div>
+                </div> --}}
             </li>
 
             <!-- Divider -->
@@ -89,7 +87,7 @@
             {{-- <div class="sidebar-heading">
                 Addons
             </div> --}}
- 
+
             <!-- Nav Item - Charts -->
             {{-- <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.all_packages')}}">
@@ -103,7 +101,7 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Subscribed Users</span></a>
             </li> --}}
-            
+
 
             <!-- Divider -->
             {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
@@ -136,7 +134,7 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
- 
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -146,14 +144,21 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">System Admin</span>
-                                <img class="img-profile rounded-circle" src="{{ asset('/assets/media/avatar') }}/{{ auth()->user()->avatar ?? 'avatar.png' }}">
+                                <img class="img-profile rounded-circle"
+                                    src="{{ asset('/assets/media/avatar') }}/{{ auth()->user()->avatar ?? 'avatar.png' }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 {{-- <div class="dropdown-divider"></div> --}}
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal"
+                                    class="btn btn-outline-default mx-1"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    type="button">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -164,52 +169,52 @@
 
                 </nav>
                 <!-- End of Topbar -->
-    @yield('content')
-  
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('/admin/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('/admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="{{ asset('/admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="{{ asset('/admin/js/sb-admin-2.min.js')}}"></script>
-    <!-- Page level plugins -->
-    <script src="{{ asset('/admin/vendor/chart.js/Chart.min.js')}}"></script>
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('/admin/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{ asset('/admin/js/demo/chart-pie-demo.js')}}"></script>
+                @yield('content')
 
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
-    
-    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
-    
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-firestore.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
-    
-    <script> 
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyBYdmaLCYwLqeU-Ud8G2T6Dnww5eS_a8II",
-            databaseURL: "https://hippacompliant-6c5ef-default-rtdb.firebaseio.com",
-            authDomain: "hippacompliant-6c5ef.firebaseapp.com",
-            projectId: "hippacompliant-6c5ef",
-            storageBucket: "hippacompliant-6c5ef.appspot.com",
-            messagingSenderId: "1023196025670",
-            appId: "1:1023196025670:web:0168e6bd37700ab77acb47",
-            measurementId: "G-804ZHKGB3H"
-        };
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-    </script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="{{ asset('/admin/vendor/jquery/jquery.min.js') }}"></script>
+                <script src="{{ asset('/admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="{{ asset('/admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="{{ asset('/admin/js/sb-admin-2.min.js') }}"></script>
+                <!-- Page level plugins -->
+                <script src="{{ asset('/admin/vendor/chart.js/Chart.min.js') }}"></script>
+                <!-- Page level custom scripts -->
+                <script src="{{ asset('/admin/js/demo/chart-area-demo.js') }}"></script>
+                <script src="{{ asset('/admin/js/demo/chart-pie-demo.js') }}"></script>
 
-    @stack("custom_js")
+                <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+
+                <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+                <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+
+                <!-- Add Firebase products that you want to use -->
+                <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-auth.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-firestore.js"></script>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+
+                <script>
+                    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyBYdmaLCYwLqeU-Ud8G2T6Dnww5eS_a8II",
+                        databaseURL: "https://hippacompliant-6c5ef-default-rtdb.firebaseio.com",
+                        authDomain: "hippacompliant-6c5ef.firebaseapp.com",
+                        projectId: "hippacompliant-6c5ef",
+                        storageBucket: "hippacompliant-6c5ef.appspot.com",
+                        messagingSenderId: "1023196025670",
+                        appId: "1:1023196025670:web:0168e6bd37700ab77acb47",
+                        measurementId: "G-804ZHKGB3H"
+                    };
+                    firebase.initializeApp(firebaseConfig);
+                    firebase.analytics();
+                </script>
+
+                @stack('custom_js')
 </body>
 
 </html>

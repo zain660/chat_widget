@@ -47,7 +47,9 @@ class AdminController extends Controller
     }
 
     public function all_users(){
+        // dd(Auth::user()->role);
         $all_user = User::where('id', '!=',Auth::user()->id)->paginate(10);
+        // dd($all_user);
         return view('admin.all_users',get_defined_vars());
     }
     public function deactive_user($id){
