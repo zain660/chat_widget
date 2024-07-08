@@ -51,7 +51,7 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('admin.allusers') }}">
-                    <i class="fas fa-fw fa-users"></i>
+                    <i class="fas fa-users"></i>
                     <span>Users</span>
                 </a>
                 {{-- <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -67,7 +67,7 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('admin.UserChat') }}">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    <i class="fas fa-comment"></i>
                     <span>Chats</span>
                 </a>
                 {{-- <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"

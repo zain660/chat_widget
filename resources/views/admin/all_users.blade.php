@@ -23,6 +23,7 @@
                     <th scope="col">Full Name</th>
                     {{-- <th scope="col">Display Picture</th> --}}
                     <th scope="col">Email</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Account Status</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -40,18 +41,25 @@
                                     class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td> --}}
                             <td>{{ $item->email }}</td>
                             <td>
+                                @if ($item->role == 1)
+                                    <div class="badge badge-primary">Agent</div>
+                                @else
+                                    <div class="badge badge-dark">Client</div>
+                                @endif
+                            </td>
+                            <td>
                                 @if ($item->account_is_active == 1)
-                                    <div class="badge badge-primary">Active</div>
+                                    <div class="badge badge-success">Active</div>
                                 @else
                                     <div class="badge badge-danger">Deactive</div>
                                 @endif
                             </td>
                             <td>
                                 @if ($item->account_is_active == 1)
-                                    <a href="{{ route('admin.deactive_user', $item->id) }}"class="btn btn-danger">Deactive
+                                    <a href="{{ route('admin.deactive_user', $item->id) }}"class="btn btn-danger">Deactivate
                                         Account</a>
                                 @else
-                                    <a href="{{ route('admin.active_user', $item->id) }}" class="btn btn-success">Active
+                                    <a href="{{ route('admin.active_user', $item->id) }}" class="btn btn-success">Activate
                                         Account</a>
                                 @endif
                             </td>

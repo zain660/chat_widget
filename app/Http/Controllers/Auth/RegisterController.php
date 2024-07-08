@@ -71,8 +71,7 @@ class RegisterController extends Controller
         //     'body' => 'required',
         // ]);
 
-        $company = Company::where('name', $data['company_name'])
-            ->orWhere('company_url', $data['company_url'])->first();
+        $company = Company::where('name', $data['company_name'])->first();
 
         if (isset($company)) {
             return back()->with('message','Company Already Exist');
@@ -83,12 +82,12 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['company_phone'],
+            'role' => 2,
         ]);
 
         Company::create([
             'user_id' => $user->id,
             'name' => $data['company_name'],
-            'company_url' => $data['company_url'],
             'company_phone' => $data['company_phone'],
         ]);
 
