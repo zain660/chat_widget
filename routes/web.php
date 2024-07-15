@@ -24,6 +24,8 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/check_middle', [App\Http\Controllers\CheckMiddleController::class, 'check_middle'])->name('check_middle');
+
 Route::post('/login_post', [App\Http\Controllers\Auth\LoginController::class, 'login_post'])->name('login_post');
 
 Route::post('/save_device_token', [App\Http\Controllers\HomeController::class, 'save_device_token'])->name('save_device_token');
@@ -81,3 +83,13 @@ Route::get('/admin/usergroup/{id}', [App\Http\Controllers\AdminController::class
 Route::get('/admin/groupchat/{id}', [App\Http\Controllers\AdminController::class, 'groupchat'])->name('admin.groupchat');
 
 // Route::get('/admin/home', [App\Http\Controllers\AdminController::class, 'dashuser'])->name('admin.home');
+Route::get('/client/apps', [App\Http\Controllers\ClientController::class, 'apps'])->name('client.apps');
+Route::get('/client/create-app', [App\Http\Controllers\ClientController::class, 'create_app'])->name('client.create_app');
+Route::post('/client/store_app', [App\Http\Controllers\ClientController::class, 'store_app'])->name('client.store_app');
+
+Route::get('/client/home', [App\Http\Controllers\ClientController::class, 'index'])->name('client.index');
+Route::get('/client/integration', [App\Http\Controllers\ClientController::class, 'integration'])->name('client.code');
+
+
+Route::get('/append_chat/{id}', [App\Http\Controllers\ChatApiController::class, 'append_chat'])->name('append_chat');
+Route::post('/message_send_from_visitor', [App\Http\Controllers\ChatApiController::class, 'message_send_from_visitor'])->name('message_send_from_visitor');

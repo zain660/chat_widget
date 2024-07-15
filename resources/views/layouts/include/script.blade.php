@@ -18,7 +18,7 @@
 <script src="{{ asset('assets/vendors/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 <script src="{{ asset('assets/vendors/svg-inject/svg-inject.min.js') }}"></script>
 <script src="{{ asset('assets/vendors/modal-stepes/modal-steps.min.js') }}"></script>
-<script src="{{ asset('assets/js/app.js') }}"></script>
+<script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
 <script>
 document.getElementById('next1').disabled = true;

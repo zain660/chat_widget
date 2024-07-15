@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $active_users = User::where('account_is_active', 1)->get();
         $active = Count($active_users);

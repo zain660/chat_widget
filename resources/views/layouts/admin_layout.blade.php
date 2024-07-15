@@ -152,10 +152,14 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 {{-- <div class="dropdown-divider"></div> --}}
-                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('logout').submit();" data-toggle="modal"
                                     data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
+                                    <form action="{{route('logout')}}" id="logout" method="post">
+                                        @csrf
+
+                                    </form>
                                 </a>
                             </div>
                         </li>
