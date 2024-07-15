@@ -47,11 +47,25 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]); 
+
+        // Admin=0, Agent=1, Client=2
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         { 
             // dd(auth()->user());
-            return redirect()->route('check_middle');
-           
+            if (auth()->user()->role == 0) {
+                return redirect()->route('admin.dashboard');
+            }
+            elseif (auth()->user()->role == 1 && auth()->user()->account_is_active == 1) {
+                // dd('sss');
+                return redirect()->route('home');
+            }
+            elseif (auth()->user()->role == 2 && auth()->user()->account_is_active == 1) {
+                // dd('sss');
+                return redirect()->route('home');
+            }
+            else{
+                return redirect()->back()->with('error','Your Account was deactivated from our system');
+            }
         }else{
             // dd(auth()->user());
             return redirect()->back()->with('error','Invalid email or password.');

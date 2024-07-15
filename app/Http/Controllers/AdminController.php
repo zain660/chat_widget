@@ -49,6 +49,7 @@ class AdminController extends Controller
         $user->phone = $request->phone;
         $user->password = Hash::make('12345678');
         $user->avatar = $img_2 ?? 'avatar.png';
+        $user->role = 1;
         $user->save();
         
         return redirect()->route('admin.allusers')->with('success','User account created Successfuly');
@@ -56,7 +57,9 @@ class AdminController extends Controller
     }
 
     public function all_users(){
-        $all_user = User::where('id', '!=',Auth::user()->id)->paginate(10);
+        // dd(Auth::user()->role);
+        $all_user = User::where('id', '!=',Auth::user()->id)->orderBy('id','DESC')->paginate(10);
+        // dd($all_user);
         return view('admin.all_users',get_defined_vars());
     }
     public function deactive_user($id){
