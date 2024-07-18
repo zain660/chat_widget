@@ -93,3 +93,4 @@ Route::get('/client/integration', [App\Http\Controllers\ClientController::class,
 
 Route::get('/append_chat/{id}', [App\Http\Controllers\ChatApiController::class, 'append_chat'])->name('append_chat');
 Route::post('/message_send_from_visitor', [App\Http\Controllers\ChatApiController::class, 'message_send_from_visitor'])->name('message_send_from_visitor');
+Route::post('/create_leads', [App\Http\Controllers\ChatApiController::class, 'create_leads'])->name('create_leads');

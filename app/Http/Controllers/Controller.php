@@ -223,7 +223,91 @@ public function send_group_message($data = [] ){
 
 //   
 
-public function send_message_to_agent(){
+    public function send_message_to_agent($data = []){
+        // return response()->json([
+        //     'data' => $data
+        // ]);
+        date_default_timezone_set("Asia/Karachi");
+        $return_array = [];
     
-}
+        // Get the current URL (host only)
+        $currentUrl = request()->getHost();
+        // 
+        // Ensure there's a unique session ID for the chat
+        if (!isset($data['session_id'])) {
+            // Handle missing session ID (generate a new one or return an error)
+            return ['error' => 'Session ID is required'];
+        }
+    
+        // Prepare message data
+        $carbon = Carbon::now(); 
+        // $dataJson = '{
+        //     "text": "'.$data['message'].'",
+        //     "user_id": "'.$data['user_id'] ?? 'visitor'.'",
+        //     "link": "'.$data['link'].'",
+        //     "username": "'.$data['username'] ?? 'Anonymous'.'",
+        //     "files": "'. $data['files'].'",
+        //     "file_type": "'.$data['file_type'].'",
+        //     "date": "'.$carbon->format('d-m-Y h:i A').'",
+        // }'; 
+
+        $messageData = [
+            'text' => $data['message'] ?? '',
+            'user_id' => $data['user_id'] ?? 'visitor',
+            'link' => $data['link'] ?? '',
+            'username' => $data['username'] ?? 'Anonymous',
+            'files' => $data['files'] ?? '',
+            'file_type' => $data['file_type'] ?? '',
+            'date' => $carbon->format('d-m-Y h:i A')
+        ];
+    
+        $dataJson = json_encode($messageData);
+
+        // return $dataJson;
+        return response($dataJson);
+        // Push to return array for logging or further use
+        array_push($return_array, [$data['session_id'] => $dataJson]);
+    
+        // Construct the Firebase URL
+        $firebaseUrl = "https://chatwidget-7d327-default-rtdb.firebaseio.com/" . urlencode($currentUrl) . "/sessions/" . urlencode($data['session_id']) . "/messages/" . $carbon->format('YmdGis') . ".json";
+       
+        // Setup cURL request
+        $ch = curl_init();
+        $newserverKey = 'AIzaSyBY37HBypaR6WoPHDmP4Qk0r1JA46dG0sk';
+        $headers = [
+            'Content-Type: application/json',
+            'Authorization: key='.$newserverKey
+        ]; 
+        curl_setopt($ch, CURLOPT_URL, $firebaseUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataJson); 
+        // Execute and close cURL
+        $res = curl_exec($ch);
+        $httpCode = curl_getinfo($ch);
+        curl_close($ch);
+    
+        // Optionally handle the response or HTTP code
+        // if ($httpCode['http_code'] != 200) {
+        //     // Handle error
+        //     return ['error' => 'Failed to send message to Firebase', 'response' => $res];
+        // }
+    
+        // Send notification to agent if necessary (assuming there's a method to notify agents)
+        // if (isset($data['agent_id'])) {
+        //     $this->send_notification_to_agent([
+        //         'agent_id' => $data['agent_id'],
+        //         'message' => $data['username'] . " sent a message",
+        //         'url' => '/Conversation/' . $data['session_id']
+        //     ]);
+        // }
+        return response()->json([
+            'message' => $res
+        ]);
+        return $res;    
+    }
 }

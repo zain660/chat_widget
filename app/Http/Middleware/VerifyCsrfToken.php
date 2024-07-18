@@ -13,6 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //\
+        '/append_chat/{id}',
         '/message_send_from_visitor',
+        '/create_leads',
+        '/create_leads'
     ];
 }
