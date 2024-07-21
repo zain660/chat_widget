@@ -30,7 +30,7 @@ class CheckMiddleController extends Controller
 
             if (auth()->user()->role == 'client') {
                 if (auth()->user()->account_is_active == 1) {
-                    return redirect()->route('client.index');
+                    return redirect()->route('client.dashboard');
                 } else {
                     Auth::logout();
                     return redirect()->back()->with('error', 'Your Account was deactivated from our system.');

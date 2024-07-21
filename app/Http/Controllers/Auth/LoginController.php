@@ -73,7 +73,7 @@ class LoginController extends Controller
                 return redirect()->route('home');
             } elseif (auth()->user()->role == 'client' && auth()->user()->account_is_active == 1) {
                 // dd('sss');
-                return redirect()->route('client.index');
+                return redirect()->route('client.dashboard');
             } else {
                 return redirect()->back()->with('error', 'Your Account was deactivated from our system');
             }

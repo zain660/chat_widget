@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Packages;
 use App\Models\ChatConvo;
+use App\Models\ClientApp;
 use App\Models\Company;
 use App\Models\GroupParticipant;
 use App\Models\Group;
+use App\Models\Lead;
 use App\Models\Subscribed;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,8 +30,14 @@ class AdminController extends Controller
         $active = Count($active_users);
         $deactive_users = User::where('account_is_active', 0)->get();
         $deactive = Count($deactive_users);
-        $company = Company::all();
-        $companyCount = Count($company);
+        $ClientApp = ClientApp::all();
+        $ClientAppCount = Count($ClientApp);
+
+        $leads = Lead::all();
+        $activeLeads = Count($leads->where('status',1));
+        $inActiveleads = Count($leads->where('status',0));
+        $totalLeads = Count($leads);
+
         return view('admin.home',get_defined_vars());
     }
     
@@ -184,6 +192,32 @@ class AdminController extends Controller
     return view('admin.groupchat',get_defined_vars());
    }
 
-  
+  public function clientList()
+  {
+    $client_list = ClientApp::with('user')->paginate(10);
+
+    foreach ($client_list as $item) {
+        $leads = Lead::where('web_url',$item->website_url)->get();
+        $leadsCount = count($leads);
+    }
+    // dd($client_list);
+    // dd($leads);
+    return view('admin.client_list',get_defined_vars());
+  }
+
+  public function client_status_active($id){
+    ClientApp::where('id',$id)->update(array(
+        'status' => 1
+    ));
+    return redirect()->back()->with('success','App Activated Successfuly.');
+
+}
+
+public function client_status_deactivate($id){
+    ClientApp::where('id',$id)->update(array(
+        'status' => 0
+    ));
+    return redirect()->back()->with('success','App De-Activated Successfuly.');
+}
 
 }

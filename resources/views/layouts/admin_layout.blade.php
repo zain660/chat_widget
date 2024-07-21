@@ -23,11 +23,10 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Chat App</div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin.dashboard')}}">
+                <div class="logo-image">
+                    <img src="{{ asset('assets/media/final-logo.png') }}">
+                </div>                
             </a>
 
             <!-- Divider -->
@@ -78,6 +77,13 @@
                         <a class="collapse-item" href="{{route('admin.Allusergroup')}}">Group chats</a>
                     </div>
                 </div> --}}
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('admin.client_list') }}">
+                    <i class="fas fa-user"></i>
+                    <span>Client</span>
+                </a>
             </li>
 
             <!-- Divider -->

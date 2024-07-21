@@ -8,11 +8,7 @@
         </div>
         <div class="row">
             <div class="col-10">
-                <h1 class="h3 mb-0 text-gray-800">All Users</h1>
-            </div>
-            <div class="col-2 d-flex justify-content-start">
-                <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#exampleModal">Create
-                    Agents</button>
+                <h1 class="h3 mb-0 text-gray-800">All Client App</h1>
             </div>
         </div>
         <br>
@@ -20,53 +16,46 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Full Name</th>
+                    <th scope="col">App Name</th>
                     {{-- <th scope="col">Display Picture</th> --}}
-                    <th scope="col">Email</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Account Status</th>
+                    <th scope="col">Client Name</th>
+                    <th scope="col">App Key</th>
+                    <th scope="col">Website URL</th>
+                    <th scope="col">Total Leads</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Created At</th>
-
-                    <th scope="col">Actions</th>
+                    <th scope="col">Action</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                @if ($all_user->count() > 0)
+                @if ($client_list->count() > 0)
                     @php
                         $count = 1;
                     @endphp
                     {{-- {{dd($all_user)}} --}}
-                    @foreach ($all_user as $item)
+                    @foreach ($client_list as $item)
                     {{-- {{dd($item)}} --}}
                         <tr>
                             <th scope="row">{{ $count++ }}</th>
-                            <td>{{ $item->name }}</td>
-                            {{-- <td><img src="{{ asset('/assets/media/avatar') }}/{{ $item->avatar }}" alt=""
-                                    class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td> --}}
-                            <td>{{ $item->email }}</td>
-                            {{-- {{dd($item->role)}} --}}
+                            <td>{{ $item->app_name }}</td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>{{ $item->app_key }}</td>
+                            <td>{{ $item->website_url }}</td>
+                            <td>{{ $leadsCount }}</td>
                             <td>
-                                @if ($item->role == 'client')
-                                <div class="badge badge-dark">Client</div>
-                                @else
-                                <div class="badge badge-primary">Agent</div>
-                                @endif
-                            </td>
-                            <td>
-                                @if ($item->account_is_active == 1)
+                                @if ($item->status == 1)
                                     <div class="badge badge-success">Active</div>
                                 @else
-                                    <div class="badge badge-danger">Deactive</div>
+                                    <div class="badge badge-danger">In-Active</div>
                                 @endif
                             </td>
                             <td>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</td>
                             <td>
-                                @if ($item->account_is_active == 1)
-                                    <a href="{{ route('admin.deactive_user', $item->id) }}"class="btn btn-danger">Deactivate
-                                        Account</a>
+                                @if ($item->status == 0)
+                                    <a href="{{ route('admin.client_status_active', $item->id) }}"class="btn btn-success">Activate App</a>
                                 @else
-                                    <a href="{{ route('admin.active_user', $item->id) }}" class="btn btn-success">Activate
-                                        Account</a>
+                                    <a href="{{ route('admin.client_status_deactivate', $item->id) }}"class="btn btn-danger">Deactivate App</a>
                                 @endif
                             </td>
                         </tr>
@@ -78,10 +67,10 @@
                 @endif
             </tbody>
         </table>
-        {{ $all_user->links() }}
+        {{ $client_list->links() }}
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -123,5 +112,5 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

@@ -77,18 +77,18 @@ Route::middleware(['auth', 'user-type:admin'])->group(function () {
     Route::post('/admin/update_packages/{id}', [App\Http\Controllers\AdminController::class, 'update_packages'])->name('admin.update_packages');
 
     Route::get('/admin/UserChat', [App\Http\Controllers\AdminController::class, 'UserChat'])->name('admin.UserChat');
-
     Route::get('/admin/UserConv/{id}', [App\Http\Controllers\AdminController::class, 'Chat_conv'])->name('admin.chat_conv');
-
     Route::get('/admin/chats/{id}', [App\Http\Controllers\AdminController::class, 'chats'])->name('admin.chats');
 
     Route::Get('/admin/Allusergroup', [App\Http\Controllers\AdminController::class, 'Allusergroup'])->name('admin.Allusergroup');
-
     Route::get('/admin/usergroup/{id}', [App\Http\Controllers\AdminController::class, 'usergroup'])->name('admin.usergroup');
-
+    Route::get('/admin/groupchat/{id}', [App\Http\Controllers\AdminController::class, 'groupchat'])->name('admin.groupchat');
     Route::get('/admin/groupchat/{id}', [App\Http\Controllers\AdminController::class, 'groupchat'])->name('admin.groupchat');
 
-    Route::get('/admin/groupchat/{id}', [App\Http\Controllers\AdminController::class, 'groupchat'])->name('admin.groupchat');
+    Route::get('/admin/client', [App\Http\Controllers\AdminController::class, 'clientList'])->name('admin.client_list');
+    Route::get('/admin/client-status-active/{id}', [App\Http\Controllers\AdminController::class, 'client_status_active'])->name('admin.client_status_active');
+    Route::get('/admin/client-status-deactivate/{id}', [App\Http\Controllers\AdminController::class, 'client_status_deactivate'])->name('admin.client_status_deactivate');
+
 });
 
 // Route::middleware(['auth', 'user-type:client'])->group(function () {
@@ -149,12 +149,12 @@ Route::middleware(['auth', 'user-type:admin'])->group(function () {
 
 // Route::get('/admin/home', [App\Http\Controllers\AdminController::class, 'dashuser'])->name('admin.home');
 Route::get('/client/apps', [App\Http\Controllers\ClientController::class, 'apps'])->name('client.apps');
+Route::get('/client/leads', [App\Http\Controllers\ClientController::class, 'leads'])->name('client.leads');
 Route::get('/client/create-app', [App\Http\Controllers\ClientController::class, 'create_app'])->name('client.create_app');
 Route::post('/client/store_app', [App\Http\Controllers\ClientController::class, 'store_app'])->name('client.store_app');
 
-Route::get('/client/home', [App\Http\Controllers\ClientController::class, 'index'])->name('client.index');
+Route::get('/client/dashboard', [App\Http\Controllers\ClientController::class, 'index'])->name('client.dashboard');
 Route::get('/client/integration', [App\Http\Controllers\ClientController::class, 'integration'])->name('client.code');
-
 
 Route::get('/append_chat/{id}', [App\Http\Controllers\ChatApiController::class, 'append_chat'])->name('append_chat');
 Route::post('/message_send_from_visitor', [App\Http\Controllers\ChatApiController::class, 'message_send_from_visitor'])->name('message_send_from_visitor');
