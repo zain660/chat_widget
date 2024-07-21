@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('client_apps', function (Blueprint $table) {
             $table->id();
             $table->string('app_name');
+            $table->foreignId('user_id');
             $table->string('app_key');
             $table->string('website_url');
             $table->integer('status')->default(0)->comment('0=active, 1=deactivate');

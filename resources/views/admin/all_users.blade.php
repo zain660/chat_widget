@@ -33,18 +33,21 @@
                     @php
                         $count = 1;
                     @endphp
+                    {{-- {{dd($all_user)}} --}}
                     @foreach ($all_user as $item)
+                    {{-- {{dd($item)}} --}}
                         <tr>
                             <th scope="row">{{ $count++ }}</th>
                             <td>{{ $item->name }}</td>
                             {{-- <td><img src="{{ asset('/assets/media/avatar') }}/{{ $item->avatar }}" alt=""
                                     class="shadow p-3 mb-5 bg-white" style="width: 50px;border-radius: 100px;"></td> --}}
                             <td>{{ $item->email }}</td>
+                            {{-- {{dd($item->role)}} --}}
                             <td>
-                                @if ($item->role == 1)
-                                    <div class="badge badge-primary">Agent</div>
+                                @if ($item->role == 'client')
+                                <div class="badge badge-dark">Client</div>
                                 @else
-                                    <div class="badge badge-dark">Client</div>
+                                <div class="badge badge-primary">Agent</div>
                                 @endif
                             </td>
                             <td>

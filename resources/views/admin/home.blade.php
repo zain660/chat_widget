@@ -15,15 +15,15 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Subscribed Users</div>
+                                    Companies</div>
                   
                                     
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$count}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$companyCount}}</div>
                                 
                                       </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                            {{-- <div class="col-auto">
+                                <i class="fas fa-company fa-2x text-gray-300"></i>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -41,9 +41,9 @@
                                     {{$active}}
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -63,9 +63,9 @@
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{$deactive}}</div>
                                   
                             </div>
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
+use Symfony\Component\HttpFoundation\Response;
 
-class UserType extends Middleware
+class UserType 
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,11 @@ class UserType extends Middleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $userType): Response
     {
-        return $next($request);
+        if(auth()->user()->role == $userType){
+            return $next($request);
+        }                 
+        abort(403);
     }
 }

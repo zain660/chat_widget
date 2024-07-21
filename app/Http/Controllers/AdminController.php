@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Packages;
 use App\Models\ChatConvo;
+use App\Models\Company;
 use App\Models\GroupParticipant;
 use App\Models\Group;
 use App\Models\Subscribed;
@@ -27,11 +28,8 @@ class AdminController extends Controller
         $active = Count($active_users);
         $deactive_users = User::where('account_is_active', 0)->get();
         $deactive = Count($deactive_users);
-        $subscribe = Subscribed::Where('id')->get();
-        $count = Count($subscribe);
-        $count++;
-        $earning = Subscribed::all();
-      
+        $company = Company::all();
+        $companyCount = Count($company);
         return view('admin.home',get_defined_vars());
     }
     

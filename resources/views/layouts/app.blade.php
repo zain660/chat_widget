@@ -77,6 +77,21 @@
                         <!-- Alternate :: External File link -->
                         <!-- <img class="injectable hw-24" src="./../assets/media/heroicons/outline/user-circle.svg" alt="Profile icon"> -->
                     </a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal"
+                        class="btn btn-outline-default mx-1"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        type="button">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                        </form>
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                        <form action="{{route('logout')}}" id="logout" method="post">
+                            @csrf
+
+                        </form>
+                    </a>
                 </li>
                 <!-- Profile Tab End -->
             </ul>

@@ -64,7 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd($data);
+        // dd($data);
 
         // $validator = Validator::make($request->all(), [
         //     'title' => 'required|unique:posts|max:255',
