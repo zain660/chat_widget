@@ -32,8 +32,8 @@ class ChatApiController extends Controller
 
            // dd(Session::get('session_id'));
     }
-    public function append_chat($app_key){
-        $app = ClientApp::where('app_key', $app_key)->where('status', 0)->first();
+    public function append_chat(Request $request, $app_key){
+        $app = ClientApp::where('app_key', $app_key)->where('website_url',$request->domain_url)->where('status', 0)->first();
         // $session = Session::put([
         //     'session_username' => 'zain',
         //     'session_id' => bin2hex(random_bytes(16))
@@ -110,22 +110,22 @@ class ChatApiController extends Controller
                                 <input type="hidden" name="_token" id="token" value="'.csrf_token().'" />
                                     <input type="hidden" name="app_key" id="app_key" value="'.$app_key.'" />
                                     
-                                    <input type="hidden" name="web_url" id="web_url" value="" />
+                                    <input type="hidden" name="web_url" class="web_url" id="web_url" value="" />
                                     <div class="row">
                                         <label for="">Name</label>
-                                        <input type="text" name="name" id="name" class="form-control">
+                                        <input type="text" name="name" required id="name" class="form-control">
                                     </div>
                                     <div class="row py-4">
                                         <label for="">Email</label>
-                                        <input type="email" name="email" id="email" class="form-control">
+                                        <input type="email" name="email" required id="email" class="form-control">
                                     </div>
                                     <div class="row">
                                         <label for="">Phone number</label>
-                                        <input type="text" name="phone" id="phone" class="form-control">
+                                        <input type="text" name="phone" required id="phone" class="form-control">
                                     </div>
                                     <div class="row py-4">
                                         <label for="">Message</label>
-                                        <textarea name="message" id="message"
+                                        <textarea name="message" id="message" required
                                             class="form-control">Type your message...</textarea>
 
                                     </div>
@@ -135,65 +135,11 @@ class ChatApiController extends Controller
                                 </form>
                             </div>
                             <div id="messages" style="'.$style_for_messages.'">
-                                <div class="d-flex justify-content-between">
-                                    <p class="small mb-1">Timona Siera</p>
-                                    <p class="small mb-1 text-muted">23 Jan 2:00 pm</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-start">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                                        alt="avatar 1" style="width: 45px; height: 100%;">
-                                    <div>
-                                        <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">For what reason
-                                            would it
-                                            be advisable for me to think about business content?</p>
-                                    </div>
-                                </div>
+                                <div id="message_append">
+                                     
 
-                                <div class="d-flex justify-content-between">
-                                    <p class="small mb-1 text-muted">23 Jan 2:05 pm</p>
-                                    <p class="small mb-1">Johny Bullock</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-                                    <div>
-                                        <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">Thank you for
-                                            your believe in
-                                            our
-                                            supports</p>
-                                    </div>
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                                        alt="avatar 1" style="width: 45px; height: 100%;">
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <p class="small mb-1">Timona Siera</p>
-                                    <p class="small mb-1 text-muted">23 Jan 5:37 pm</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-start">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                                        alt="avatar 1" style="width: 45px; height: 100%;">
-                                    <div>
-                                        <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">Lorem ipsum dolor
-                                            sit amet
-                                            consectetur adipisicing elit similique quae consequatur</p>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <p class="small mb-1 text-muted">23 Jan 6:10 pm</p>
-                                    <p class="small mb-1">Johny Bullock</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-                                    <div>
-                                        <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">Dolorum quasi
-                                            voluptates quas
-                                            amet in
-                                            repellendus perspiciatis fugiat</p>
-                                    </div>
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                                        alt="avatar 1" style="width: 45px; height: 100%;">
-                                </div>
-
-                            
+                                     
+                                </div> 
                             <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3"
                                 style="position: sticky;bottom: 0;z-index: 18;background-color: white;margin-bottom: 88px;position: fixed;">
                                 <form method="post" action="'.route("message_send_from_visitor").'"
@@ -201,6 +147,7 @@ class ChatApiController extends Controller
                                     <input type="hidden" name="_token" id="token" value="'.csrf_token().'" />
                                     <input type="hidden" name="app_key" id="app_key" value="'.$app_key.'" /> 
                                     <input type="hidden" name="session_id" id="session_id" value="" /> 
+                                    <input type="hidden" name="web_url" class="web_url" id="web_url" value="" />
                                     
                                     <div class="input-group mb-0">
                                         <input type="text" class="form-control" id="message" name="message"
@@ -231,7 +178,7 @@ class ChatApiController extends Controller
         }else{
             return response()->json([
                 'code' => 403,
-                'message' => 'App key is not correct, or app is currently is not in Active state.'
+                'message' => 'CHAT APPEND FAILED:This may happend because App key is not correct, app is currently is not in Active state. or Website domain url is not matched.'
             ]);
         }
          
@@ -247,8 +194,13 @@ class ChatApiController extends Controller
        $leads->init_message = $request->message;
        $leads->phone = $request->phone;
        $leads->web_url = $request->web_url;
+       $leads->web_url = $request->web_url;
+       $leads->session_id = $request->session_id;
        $leads->save();
         
+       return response()->json([
+        'lead_id' => $leads->id
+       ]);
     //    $this->generateSessionId($request);
     //    if(Session::get('session_username') == null){
     //        $session_id = $this->generateSessionId($request);
@@ -262,7 +214,7 @@ class ChatApiController extends Controller
     }
 
     public function message_send_from_visitor(Request $request){
-        // dd($request->all());
+        // return response()->json($request->all());
          
         $data = [
             'message' => $request->message,
@@ -272,11 +224,15 @@ class ChatApiController extends Controller
             'file_type' => '', // Optional, can be empty if no files
             'username' => Session::get('session_username'), // Optional, defaults to 'Anonymous'
             'user_id' => $request->session_id, // Optional, defaults to 'visitor'
-            'agent_id' => 'agent_001' // Optional, if you want to send a notification to the agent
+            'agent_id' => 'agent_001', // Optional, if you want to send a notification to the agent
+            'app_key' => $request->app_key,
         ];
         
-        $send_message_to_agent = $this->send_message_to_agent($data);
-        return $send_message_to_agent;
+        return  $this->send_message_to_agent($data);
+        // return $send_message_to_agent;
     }
 
+    public function widget_test(){
+        return view('chat_widget_append');
+    }
 }

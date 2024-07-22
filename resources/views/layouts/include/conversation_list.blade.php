@@ -113,62 +113,36 @@
                            <!-- Sidebar Header End -->
                        </div>
                        <!-- Chat Header End -->
-                       @php
-                           $conversation = App\Models\ChatConvo::where('sender_id', Auth::user()->id)
-                               ->orwhere('reciever_id', Auth::user()->id)
-                               ->orderBy('id', 'DESC')
-                               ->get();
-                           $count_conversation = App\Models\ChatConvo::where('sender_id', Auth::user()->id)
-                               ->orwhere('reciever_id', Auth::user()->id)
-                               ->count();
-                           $all_group = App\Models\GroupParticipant::where('participant_id', Auth::user()->id)
-                               ->orderBy('id', 'DESC')
-                               ->get();
-                           $all_group_count = App\Models\GroupParticipant::where(
-                               'participant_id',
-                               Auth::user()->id,
-                           )->count();
-
-                       @endphp
+                        
                        <!-- Chat Contact List Start -->
                        <ul class="contacts-list" id="chatContactTab" data-chat-list="">
                            <!-- Chat Item Start -->
-                           @if ($count_conversation > 0)
-                               @foreach ($conversation as $contact)
-                                   @php
-                                       if ($contact->reciever_id == Auth::user()->id) {
-                                           $contact_details = App\Models\User::where(
-                                               'id',
-                                               $contact->sender_id,
-                                           )->first();
-                                       } else {
-                                           $contact_details = App\Models\User::where(
-                                               'id',
-                                               $contact->reciever_id,
-                                           )->first();
-                                       }
-                                   @endphp
-
+                           @if ($get_websites->count() > 0)
+                               @foreach ($get_websites as $contact) 
+                               @php 
+                                    $leads = App\Models\Lead::where('web_url', $contact->website_url)->count();
+                                    
+                                @endphp
                                    <!-- Chat Item Start -->
                                    <li
-                                       class="contacts-item @if (Request::path() != 'home') @if ($id == $contact_details->id) active @endif @endif">
+                                       class="contacts-item">
                                        <a class="contacts-link"
-                                           href="/Conversation/{{ $contact_details->id }}/{{ str_replace(' ', '-', $contact_details->name) }}">
+                                           href="{{route('web_details', $contact->app_key)}}">
                                            <div class="avatar avatar-online">
-                                               <img src="{{ asset('/assets/media/avatar') }}/{{ $contact_details->avatar ?? 'avatar.png' }}"
+                                               <img src="{{ asset('/assets/media/avatar') }}/{{ $contact->avatar ?? 'avatar.png' }}"
                                                    alt="">
                                            </div>
                                            <div class="contacts-content">
                                                <div class="contacts-info">
                                                    <h6 class="chat-name">
-                                                       {{ $contact_details->name }}</h6>
+                                                       {{ $contact->website_url }}</h6>
                                                    <div class="chat-time">
                                                        <span>{{ $contact->created_at->diffForHumans() }}</span>
                                                    </div>
                                                </div>
                                                <div class="contacts-texts">
                                                    <p class="text-truncate">
-                                                       {{ $contact->message }}
+                                                       <div class="badge badge-success">{{$leads}} Leads</div>
                                                    </p>
                                                </div>
                                            </div>
@@ -178,63 +152,7 @@
                                @endforeach
                            @endif
                            {{-- @dd(asset('Group/'.$id.'/'.$name.''), url()->current()); --}}
-                           @if ($all_group_count > 0)
-                               @foreach ($all_group as $all_groups)
-                                   <!-- Chat Item Start -->
-                                   @php
-                                       $group_details = App\Models\Group::where('id', $all_groups->group_id)->first();
-                                   @endphp
-                                   @if ($group_details != null)
-                                       <li
-                                           class="contacts-item groups @if (Request::path() == 'Group') @if ($id == $all_groups->id)) active @endif @endif">
-                                           <a class="contacts-link"
-                                               href="/Group/{{ $group_details->id }}/{{ str_replace(' ', '-', $group_details->group_name) }}">
-                                               <div class="avatar bg-success text-light">
-                                                   <span>
-                                                       <!-- Default :: Inline SVG -->
-                                                       <img src="{{ asset('/group_thumb') }}/{{ $group_details->group_thumb }}"
-                                                           alt="" class="img">
-
-                                                       <!-- Alternate :: External File link -->
-                                                       <!-- <img class="injectable" src="./../assets/media/heroicons/outline/user-group.svg" alt=""> -->
-                                                   </span>
-                                               </div>
-                                               <div class="contacts-content">
-                                                   <div class="contacts-info">
-                                                       <h6 class="chat-name">
-                                                           {{ $group_details->group_name }}
-                                                       </h6>
-                                                       <div class="chat-time">
-                                                           <span>{{ $group_details->updated_at->diffForHumans() }}</span>
-                                                       </div>
-                                                   </div>
-                                                   <div class="contacts-texts">
-                                                       <p class="text-truncate">
-                                                           <span>{{ $group_details->last_msg_nam }}: </span>
-                                                           {{ $group_details->group_last_message }}
-                                                       </p>
-                                                       {{-- <div class="d-inline-flex align-items-center ml-1">
-                                                       <!-- Default :: Inline SVG -->
-                                                       @if ($group_details->group_privacy == 'private')
-                                                           <svg class="hw-16 text-muted" viewBox="0 0 20 20"
-                                                               fill="currentColor">
-                                                               <path fill-rule="evenodd"
-                                                                   d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                                                   clip-rule="evenodd"></path>
-                                                           </svg>
-                                                       @endif
-
-                                                       <!-- Alternate :: External File link -->
-                                                       <!-- <img class="injectable hw-16 text-muted" src="./../assets/media/heroicons/solid/lock-closed.svg" alt=""> -->
-                                                   </div> --}}
-                                                   </div>
-                                               </div>
-                                           </a>
-                                       </li>
-                                   @endif
-                                   <!-- Chat Item End -->
-                               @endforeach
-                           @endif
+                            
                        </ul>
                        <!-- Chat Contact List End -->
                    </div>

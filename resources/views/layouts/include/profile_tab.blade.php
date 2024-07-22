@@ -24,7 +24,7 @@
                           <h6 class="mb-1">Account</h6>
                           <p class="mb-0 text-muted small">Update personal &amp; contact information</p>
                       </div>
-                      <form method="post" id="account_info_form" action="{{route('user.update_profile')}}">
+                      <form method="post" id="account_info_form" action="{{ route('user.update_profile') }}">
                           @csrf
                           <div class="card-body">
                               <div class="row">
@@ -43,15 +43,15 @@
                                               id="mobileNumber" value="{{ Auth::user()->phone }}"
                                               placeholder="Type your mobile number" value="+01-222-364522">
                                       </div>
-                                  </div> 
+                                  </div>
                                   <div class="col-md-6 col-12">
                                       <div class="form-group">
                                           <label for="emailAddress">Email address</label>
                                           <input type="email" readonly class="form-control form-control-md"
                                               id="emailAddress" placeholder="Type your email address"
-                                              value="{{auth()->user()->email}}">
+                                              value="{{ auth()->user()->email }}">
                                       </div>
-                                  </div> 
+                                  </div>
                               </div>
                           </div>
 
@@ -114,14 +114,15 @@
                       </div>
 
                       <div class="card-body">
-                          <form method="post" action="{{route('user.update_profile','password_update')}}">
+                          <form method="post" action="{{ route('user.update_profile', 'password_update') }}">
                               @csrf
                               <div class="row">
                                   <div class="col-md-6 col-12">
                                       <div class="form-group">
                                           <label for="current-password">Current Password</label>
                                           <input type="password" class="form-control form-control-md"
-                                              id="current-password" name="c_password" placeholder="Current password" autocomplete="on">
+                                              id="current-password" name="c_password" placeholder="Current password"
+                                              autocomplete="on">
                                       </div>
                                   </div>
                               </div>
@@ -130,24 +131,26 @@
                                       <div class="form-group">
                                           <label for="new-password">New Password</label>
                                           <input type="password" class="form-control form-control-md"
-                                              id="new-password" name="n_password" placeholder="New password" autocomplete="off">
+                                              id="new-password" name="n_password" placeholder="New password"
+                                              autocomplete="off">
                                       </div>
                                   </div>
                                   <div class="col-md-6 col-12">
                                       <div class="form-group">
                                           <label for="repeat-password">Repeat Password</label>
                                           <input type="password" class="form-control form-control-md"
-                                              id="repeat-password" name="r_password" placeholder="Repeat password" autocomplete="off">
+                                              id="repeat-password" name="r_password" placeholder="Repeat password"
+                                              autocomplete="off">
                                       </div>
                                   </div>
                               </div>
-                          
+
                       </div>
 
-                          <div class="card-footer d-flex justify-content-end">
-                              <button type="button" class="btn btn-link text-muted mx-1">Reset</button>
-                              <button type="submit" class="btn btn-primary">Save Changes</button>
-                          </div>
+                      <div class="card-footer d-flex justify-content-end">
+                          <button type="button" class="btn btn-link text-muted mx-1">Reset</button>
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </div>
                       </form>
                   </div>
 

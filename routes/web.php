@@ -34,6 +34,8 @@ Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'upd
 
 Route::get('/get_users_list/{name}', [App\Http\Controllers\HomeController::class, 'get_users_list'])->name('get_users_list');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/web_details/{app_key}', [App\Http\Controllers\HomeController::class, 'web_details'])->name('web_details');
+
 Route::get('/Conversation/{id}/{name}', [App\Http\Controllers\HomeController::class, 'conversation'])->name('Conversation');
 Route::post('/send_message/{id}', [App\Http\Controllers\HomeController::class, 'send_message'])->name('send_message/{id}');
 Route::get('/block/{id}', [App\Http\Controllers\HomeController::class, 'block'])->name('block/{id}');
@@ -94,3 +96,6 @@ Route::get('/client/integration', [App\Http\Controllers\ClientController::class,
 Route::get('/append_chat/{id}', [App\Http\Controllers\ChatApiController::class, 'append_chat'])->name('append_chat');
 Route::post('/message_send_from_visitor', [App\Http\Controllers\ChatApiController::class, 'message_send_from_visitor'])->name('message_send_from_visitor');
 Route::post('/create_leads', [App\Http\Controllers\ChatApiController::class, 'create_leads'])->name('create_leads');
+
+
+Route::get('/widget_test', [App\Http\Controllers\ChatApiController::class, 'widget_test'])->name('widget_test');

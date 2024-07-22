@@ -1,4 +1,5 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
 
@@ -11,7 +12,6 @@
 <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-firestore.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 
 <script src="{{ asset('assets/vendors/bootstrap/bootstrap.bundle.min.js') }}"></script>
@@ -21,45 +21,45 @@
 <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
 <script>
-document.getElementById('next1').disabled = true;
+    document.getElementById('next1').disabled = true;
 
-function check_group_name() {
-    // console.log($('#groupName').val());
-    if ($('#groupName').val() == null || $('#files').val() == null) {
-        document.getElementById('next1').disabled = true;
-    } else {
-        document.getElementById('next1').disabled = false;
+    function check_group_name() {
+        // console.log($('#groupName').val());
+        if ($('#groupName').val() == null || $('#files').val() == null) {
+            document.getElementById('next1').disabled = true;
+        } else {
+            document.getElementById('next1').disabled = false;
 
-    }
-}
-// Add record
-$('#create_group_form').submit(function(e) {
-
-
-    e.preventDefault();
-    var form = new FormData(document.getElementById('create_group_form'));
-    var token = $('#token').val();
-    form.append('_token', token);
-    $.ajax({
-        url: '/create_group',
-        type: 'post',
-        data: form,
-        cache: false,
-        contentType: false, //must, tell jQuery not to process the data
-        processData: false,
-
-        success: function(response) {
-            // console.log(response);
-            document.getElementById('group_id').value = response.group_id;
-            console.log(response.code);
-            if (response.code == null) {
-                $('#heading').html('Group did not created');
-            }
         }
+    }
+    // Add record
+    $('#create_group_form').submit(function(e) {
+
+
+        e.preventDefault();
+        var form = new FormData(document.getElementById('create_group_form'));
+        var token = $('#token').val();
+        form.append('_token', token);
+        $.ajax({
+            url: '/create_group',
+            type: 'post',
+            data: form,
+            cache: false,
+            contentType: false, //must, tell jQuery not to process the data
+            processData: false,
+
+            success: function(response) {
+                // console.log(response);
+                document.getElementById('group_id').value = response.group_id;
+                console.log(response.code);
+                if (response.code == null) {
+                    $('#heading').html('Group did not created');
+                }
+            }
+        });
+
+
     });
-
-
-});
 </script>
 
 
@@ -112,20 +112,21 @@ $('#create_group_form').submit(function(e) {
 <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-        apiKey: "AIzaSyBYdmaLCYwLqeU-Ud8G2T6Dnww5eS_a8II",
-        databaseURL: "https://hippacompliant-6c5ef-default-rtdb.firebaseio.com",
-        authDomain: "hippacompliant-6c5ef.firebaseapp.com",
-        projectId: "hippacompliant-6c5ef",
-        storageBucket: "hippacompliant-6c5ef.appspot.com",
-        messagingSenderId: "1023196025670",
-        appId: "1:1023196025670:web:0168e6bd37700ab77acb47",
-        measurementId: "G-804ZHKGB3H"
+        apiKey: "AIzaSyBY37HBypaR6WoPHDmP4Qk0r1JA46dG0sk",
+        databaseURL: "https://chatwidget-7d327-default-rtdb.firebaseio.com",
+        authDomain: "chatwidget-7d327.firebaseapp.com",
+        projectId: "chatwidget-7d327",
+        storageBucket: "chatwidget-7d327.appspot.com",
+        messagingSenderId: "89801308295",
+        appId: "1:89801308295:web:131b787e5d5ce6b70e6022",
+        measurementId: "G-W0EDPH9MRG"
     };
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
     const messaging = firebase.messaging();
-
+</script>
+{{--
     messaging
         .requestPermission()
         .then(function() {
@@ -207,4 +208,4 @@ $('#create_group_form').submit(function(e) {
     ref.once('value', () => {
         newItems = true
     })
-</script>
+</script> --}}

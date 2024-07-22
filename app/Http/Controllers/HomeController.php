@@ -14,6 +14,8 @@ use App\Models\Subscribed;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Carbon\Carbon;
 use App\Models\Packages;
+use App\Models\Lead;
+use App\Models\ClientApp;
 use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
@@ -128,118 +130,91 @@ class HomeController extends Controller
      }
     public function index()
     {
-        $conversation = ChatConvo::where('sender_id',Auth::user()->id)->orwhere('reciever_id',Auth::user()->id)->orderBy('id','DESC')->get();
-         $count_conversation = ChatConvo::where('sender_id',Auth::user()->id)->orwhere('reciever_id',Auth::user()->id)->count();
-        $all_group = GroupParticipant::where('participant_id',Auth::user()->id)->orderBy('id','DESC')->get();
-        $all_group_count = GroupParticipant::where('participant_id',Auth::user()->id)->count();
+        // $conversation = ChatConvo::where('sender_id',Auth::user()->id)->orwhere('reciever_id',Auth::user()->id)->orderBy('id','DESC')->get();
+        //  $count_conversation = ChatConvo::where('sender_id',Auth::user()->id)->orwhere('reciever_id',Auth::user()->id)->count();
+        // $all_group = GroupParticipant::where('participant_id',Auth::user()->id)->orderBy('id','DESC')->get();
+        // $all_group_count = GroupParticipant::where('participant_id',Auth::user()->id)->count();
+        $get_websites = ClientApp::all();
+        // dd($get_websites);
+        return view('home',compact('get_websites'));
+    }
 
-        return view('home',compact('conversation','count_conversation','all_group','all_group_count'));
+    public function web_details($app_key){
+        $check_app_key = ClientApp::where('app_key', $app_key)->first();
+        if($check_app_key == null){
+            return redirect()->back()->with('error', 'Something went wrong.');
+        }
+        $get_leads = Lead::where('web_url', $check_app_key->website_url)->get();
+        return view('website_details_list',get_defined_vars());
     }
 
     public function conversation(Request $request,$id,$name){
+        $lead_details = Lead::findorfail($id);
+        $get_leads = Lead::all();
+        $client_app = ClientApp::where('website_url', $lead_details->web_url)->first();
 
-         $conversation = ChatConvo::where('sender_id',Auth::user()->id)
-         ->orwhere('reciever_id',Auth::user()->id)
-         ->orderBy('id','DESC')
-         ->get();
-         $count_conversation = ChatConvo::where('sender_id',Auth::user()->id)->orwhere('reciever_id',Auth::user()->id)->count();
-         $contact_details = User::where('id',$id)->first();
+        // dd($get_websites);
          $check_already_block = BlockUser::where('block_from',Auth::user()->id)
          ->where('block_to',$id)
          ->orwhere('block_to',Auth::user()->id)
          ->where('block_from',$id)->first();
 
-        return view('conversation',compact('request', 'id','name','conversation','count_conversation','contact_details','check_already_block'));
+        return view('conversation',compact('request','client_app','lead_details', 'id','name','get_leads','check_already_block'));
     }
 
     public function send_message(Request $request, $id){
 
-        $count_conversation = ChatConvo::where('sender_id',Auth::user()->id)->where('reciever_id',$id)->orwhere('sender_id',$id)->orwhere('reciever_id',Auth::user()->id)->count();
-        if($count_conversation == 0){
-            if($request->hasFile('files')){
+        $lead_details = Lead::findorfail($id);
+        $client_app = ClientApp::where('website_url', $lead_details->web_url)->first();
+        // if($count_conversation == 0){
+        //     // if($request->hasFile('files')){
 
-                $attechment  = $request->file('files');
+        //     //     $attechment  = $request->file('files');
 
-                    $img_2 =  time().$attechment->getClientOriginalName();
-                    $attechment->move(public_path('message_media'),$img_2);
+        //     //         $img_2 =  time().$attechment->getClientOriginalName();
+        //     //         $attechment->move(public_path('message_media'),$img_2);
 
-                    $image_name = explode('.', $img_2);
-                    $extention = end($image_name);
-                    $extention = Str::lower($extention);
+        //     //         $image_name = explode('.', $img_2);
+        //     //         $extention = end($image_name);
+        //     //         $extention = Str::lower($extention);
 
-                    if($extention == "png"){
+        //     //         if($extention == "png"){
 
-                        $type = 'image';
-                    }
-                    elseif($extention == "jpg"){
-                        $type = 'image';
-                    }
-                    elseif($extention == "mp4"){
-                        $type = 'video';
-                    }
+        //     //             $type = 'image';
+        //     //         }
+        //     //         elseif($extention == "jpg"){
+        //     //             $type = 'image';
+        //     //         }
+        //     //         elseif($extention == "mp4"){
+        //     //             $type = 'video';
+        //     //         }
 
-                    elseif($extention == "jpeg"){
-                        $type = 'image';
-                    }else{
+        //     //         elseif($extention == "jpeg"){
+        //     //             $type = 'image';
+        //     //         }else{
 
-                        $type = "document";
-                    }
-            }
-            $create_chat = new ChatConvo();
-            $create_chat->sender_id = Auth::user()->id;
-            $create_chat->reciever_id = $id;
-            $create_chat->message = $request->message;
-            $create_chat->file = $type ?? '';
-            $create_chat->save();
-        $contact = User::where('id',$id)->first();
+        //     //             $type = "document";
+        //     //         }
+        //     // } 
 
-           $this->send_message_to_user(['id'=>$id,'file_type'=>$type ?? '','link'=>'/Conversation/'.$id.'/'.$contact->name.' ', 'message'=>$request->message,'files'=>$img_2 ?? '']);
+        // }     
+        $data = [
+            'message' => $request->message,
+            'session_id' => $lead_details->session_id, // This should be a unique session identifier
+            'link' => $lead_details->web_url,
+            'files' => '', // Optional, can be empty if no files
+            'file_type' => '', // Optional, can be empty if no files
+            'username' => $lead_details->name, // Optional, defaults to 'Anonymous'
+            'user_id' => auth()->user()->id, // Optional, defaults to 'visitor'
+            'agent_id' => auth()->user()->id, // Optional, if you want to send a notification to the agent
+            'app_key' => $client_app->app_key,
+        ];
+        
+        return  $this->send_message_to_agent($data);
 
-        }else{
+        //    $this->send_message_to_user(['id'=>$id,'file_type'=>$type ?? '','link'=>'/Conversation/'.$id.'/'.$contact->name.' ', 'message'=>$request->message,'files'=>$img_2 ?? '']);
 
-             if($request->hasFile('files')){
-
-                $attechment  = $request->file('files');
-
-                    $img_2 =  time().$attechment->getClientOriginalName();
-                    $attechment->move(public_path('message_media'),$img_2);
-
-                    $image_name = explode('.', $img_2);
-                    $extention = end($image_name);
-                    $extention = Str::lower($extention);
-
-                    if($extention == "png"){
-
-                        $type = 'image';
-                    }
-                    elseif($extention == "jpg"){
-                        $type = 'image';
-                    }
-                    elseif($extention == "mp4"){
-                        $type = 'video';
-                    }
-
-                    elseif($extention == "jpeg"){
-                        $type = 'image';
-                    }else{
-
-                        $type = "document";
-                    }
-            }
-
-                    ChatConvo::where('sender_id',Auth::user()->id)->where('reciever_id',$id)->orwhere('sender_id',$id)->orwhere('reciever_id',Auth::user()->id)->update(array(
-                    'sender_id' => Auth::user()->id,
-                    'reciever_id' => $id,
-                    'file' => $type ?? '',
-                    'message' => $request->message,
-
-                    ));
-           $contact = User::where('id',$id)->first();
-
-           $this->send_message_to_user(['id'=>$id,'file_type'=>$type ?? '','link'=>'/Conversation/'.$id.'/'.$contact->name.' ', 'message'=>$request->message,'files'=>$img_2 ?? '']);
-
-        }
-
+        
     }
 
     public function block($id){

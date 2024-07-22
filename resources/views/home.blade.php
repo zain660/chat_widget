@@ -8,7 +8,7 @@
                 <div class="d-flex flex-column justify-content-center text-center h-100 w-100">
                     <div class="container">
                         <div class="avatar avatar-lg mb-2">
-                            <img class="avatar-img" src="{{asset('/assets/media/avatar')}}/{{Auth::user()->avatar}}" alt="">
+                            <img class="avatar-img" src="{{asset('/assets/media/avatar')}}/{{Auth::user()->avatar ?? 'avatar.png'}}" alt="">
                         </div>
                         <h5>Welcome, {{ auth()->user()->name }}!</h5>
                         <p class="text-muted">Please select a chat to Start messaging.</p>

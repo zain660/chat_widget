@@ -33,12 +33,12 @@
                 <!-- Chat participant's Name -->
                 <div class="media chat-name align-items-center text-truncate">
                     <div class="avatar avatar-online d-none d-sm-inline-block mr-3">
-                        <img src="{{ asset('/assets/media/avatar') }}/{{ $contact_details->avatar ?? 'avatar.png' }}"
+                        <img src="{{ asset('/assets/media/avatar') }}/{{ $lead_details->avatar ?? 'avatar.png' }}"
                             alt="">
                     </div>
 
                     <div class="media-body align-self-center ">
-                        <h6 class="text-truncate mb-0">{{ $contact_details->name }}</h6>
+                        <h6 class="text-truncate mb-0">{{ $lead_details->name }}</h6>
                         {{-- <small class="text-muted">Online</small> --}}
                     </div>
                 </div>
@@ -332,12 +332,12 @@
                         <!-- User Profile Picture -->
                         <div class="avatar avatar-xl mx-5 mb-3">
                             <img class="avatar-img"
-                                src="{{ asset('/assets/media/avatar') }}/{{ $contact_details->avatar ?? 'avatar.png' }}"
+                                src="{{ asset('/assets/media/avatar') }}/{{ $lead_details->avatar ?? 'avatar.png' }}"
                                 alt="">
                         </div>
 
                         <!-- User Info -->
-                        <h5 class="mb-1">{{ $contact_details->name }}</h5>
+                        <h5 class="mb-1">{{ $lead_details->name }}</h5>
                         <p class="text-muted d-flex align-items-center justify-content-center">
                             <!-- Default :: Inline SVG -->
                             <svg class="hw-18 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -350,7 +350,7 @@
 
                             <!-- Alternate :: External File link -->
                             <!-- <img class="injectable mr-1 hw-18" src="./../assets/media/heroicons/outline/location-marker.svg" alt=""> -->
-                            <span>{{ $contact_details->country }}</span>
+                            <span>{{ $lead_details->country }}</span>
                         </p>
 
                         <!-- User Quick Options -->
@@ -395,14 +395,14 @@
                                     <!-- List Group Item Start -->
                                     <li class="list-group-item border-0">
                                         <p class="small text-muted mb-0">Phone</p>
-                                        <p class="mb-0">{{ $contact_details->phone }}</p>
+                                        <p class="mb-0">{{ $lead_details->phone }}</p>
                                     </li>
                                     <!-- List Group Item End -->
 
                                     <!-- List Group Item Start -->
                                     <li class="list-group-item border-0">
                                         <p class="small text-muted mb-0">Email</p>
-                                        <p class="mb-0">{{ $contact_details->email }}</p>
+                                        <p class="mb-0">{{ $lead_details->email }}</p>
                                     </li>
                                     <!-- List Group Item End -->
 
@@ -486,34 +486,7 @@
     <!-- Modal 4 :: Notifications -->
     {{-- @include('layouts.include.profile_tab') --}}
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Make payment</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="" method="post">
-                <label for="">From:</label>
-                <input type="text" required readonly id="from_wallet_address" class="form-control">
-                
-                <label for="">To:</label>
-                <input type="text" required placeholder="" placeholder="{{$contact_details->name}} Wallet Address" id="to_wallet_address" class="form-control">
-                
-                <label for="">Amount:</label>
-                <input type="number" required placeholder="" placeholder="Type Amount" id="amount" class="form-control">
-            </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="sendTransaction()">Send</button>
-            </div>
-          </div>
-        </div>
-      </div>
+ 
 
     {{-- </main> --}}
 
@@ -661,8 +634,13 @@
 
 
         <script>
-            var reff = firebase.database().ref("user_id_{{ auth()->user()->id }}/messages/user_id_{{ $id }}");
-            reff.on('child_added', function(snapshot) {
+             var appKey = "{{$client_app->app_key}}"; // Replace this with the actual way you retrieve app_key
+             var sessionId = "{{$lead_details->session_id}}";
+
+        var relativePath = appKey + "/sessions/" + sessionId + "/messages";
+        var reff = firebase.database().ref(relativePath);
+
+        reff.on('child_added', function(snapshot) {
 
                 var AuthName = '{{ auth()->user()->id }}'
                 var myname = "{{ Auth::user()->name }}";
@@ -722,7 +700,7 @@
                     $("#shared-docs").append(recent_docs);
                 }
 
-                if (name == AuthName) {
+                if (snapshot.val().user_id == AuthName) {
 
                     var block =
                         ' <div class="message self"><div class="message-wrapper"><div class="message-content"><span> ' +
@@ -739,7 +717,7 @@
                     var block2 =
                         '<div class="message"><div class="message-wrapper"><div class="message-content"><span>' +
                         snapshot.val().text + '</span>' + image_tag +
-                        '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="{{ asset('/assets/media/avatar') }}/{{ $contact_details->avatar ?? 'avatar.png' }}"></div><span class="message-date">' +
+                        '</div></div><div class="message-options"><div class="avatar avatar-sm"><img alt="" src="{{ asset('/assets/media/avatar') }}/{{ $lead_details->avatar ?? 'avatar.png' }}"></div><span class="message-date">' +
                         snapshot.val().date + '</span></div></div> ';
 
                     $("#message-container").append(block2);

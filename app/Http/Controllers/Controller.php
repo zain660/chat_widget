@@ -250,7 +250,7 @@ public function send_group_message($data = [] ){
         //     "file_type": "'.$data['file_type'].'",
         //     "date": "'.$carbon->format('d-m-Y h:i A').'",
         // }'; 
-
+            
         $messageData = [
             'text' => $data['message'] ?? '',
             'user_id' => $data['user_id'] ?? 'visitor',
@@ -258,18 +258,21 @@ public function send_group_message($data = [] ){
             'username' => $data['username'] ?? 'Anonymous',
             'files' => $data['files'] ?? '',
             'file_type' => $data['file_type'] ?? '',
-            'date' => $carbon->format('d-m-Y h:i A')
+            'date' => $carbon->format('d-m-Y h:i A'),
+            'agent_id' => $data['agent_id'] ?? ''
         ];
-    
+        // return response()->json([
+        //     'messgae' => $messageData
+        // ]);
         $dataJson = json_encode($messageData);
 
         // return $dataJson;
-        return response($dataJson);
+        // return response($dataJson);
         // Push to return array for logging or further use
         array_push($return_array, [$data['session_id'] => $dataJson]);
-    
+        // return response()->json($data['link']);
         // Construct the Firebase URL
-        $firebaseUrl = "https://chatwidget-7d327-default-rtdb.firebaseio.com/" . urlencode($currentUrl) . "/sessions/" . urlencode($data['session_id']) . "/messages/" . $carbon->format('YmdGis') . ".json";
+        $firebaseUrl = "https://chatwidget-7d327-default-rtdb.firebaseio.com/".$data['app_key']."/sessions/" . urlencode($data['session_id']) . "/messages/" . $carbon->format('YmdGis') . ".json";
        
         // Setup cURL request
         $ch = curl_init();
@@ -305,9 +308,10 @@ public function send_group_message($data = [] ){
         //         'url' => '/Conversation/' . $data['session_id']
         //     ]);
         // }
+        // dd($res);
         return response()->json([
             'message' => $res
         ]);
-        return $res;    
+        return 'success';    
     }
 }

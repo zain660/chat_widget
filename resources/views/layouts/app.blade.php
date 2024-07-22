@@ -79,22 +79,48 @@
                     </a>
                 </li>
                 <!-- Profile Tab End -->
-            </ul>
+            </ul> 
             <!-- Main Nav End -->
         </div>
         <!-- Navigation End -->
-        @include('layouts.include.conversation_list')
+        @php
+    // Get the full URL
+        $url = request()->url();
+
+        // Parse the URL to get the last segment
+        $segments = explode('/', $url);
+        $lastSegment = end($segments);
+       
+        $app_key = App\Models\ClientApp::where('app_key',$lastSegment)->first();
+       
+
+
+    // Parse the URL to get the path
+    $path = parse_url($url, PHP_URL_PATH);
+
+    // Split the path into segments
+    $segments_2 = explode('/', $path);
+
+    // Extract the desired segments
+    $conversationId = $segments[3] ?? null;
+        @endphp
+            @if($app_key != null || $segments[3] == 'Conversation')
+            @include('layouts.include.website_details_include')
+        @else
+            @include('layouts.include.conversation_list')
+        @endif
 
         <!-- Main Start -->
         <main class="main @if ($url == 'Conversation') main-visible @endif">
-
+         
             @yield('content')
+               
             <!-- Chats Page End -->
-
-            @include('layouts.include.profile_tab')
+            {{-- @if(Illumi nate\Support\Facades\Request::) --}}
             <!-- Profile Settings End -->
 
         </main>
+        <div class="backdrop"></div>
         <!-- Modal 2 :: Create Group -->
         <div class="modal modal-lg-fullscreen fade" id="createGroup" tabindex="-1" role="dialog"
             aria-labelledby="createGroupLabel" aria-hidden="true">
@@ -350,8 +376,15 @@
         </div>
 
         @include('layouts.include.script')
-              @include('layouts.include.sweetalert')
+        @include('layouts.include.sweetalert')
+{{-- 
+        <script>
+             var reff = firebase.database().ref("user_id_{{ auth()->user()->id }}/messages/user_id_{{ $id }}");
+             reff.on('child_added', function(snapshot) {
 
+
+             })
+        </script> --}}
     
         {{-- seek quality muscle subject size churn van filter auction onion depth ugly --}}
         @stack('custom_js')
