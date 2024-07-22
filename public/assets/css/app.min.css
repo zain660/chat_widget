@@ -9386,3 +9386,8 @@ img.mfp-img {
     padding-right: 6px; } }
 
 /*# sourceMappingURL=app.min.css.map */
+
+.logo-image img {
+  width: 200px;
+  height: auto;
+}

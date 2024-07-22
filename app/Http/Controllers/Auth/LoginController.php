@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Models\Packages;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -40,40 +42,50 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login_post(Request $request){
+    public function logout_post(Request $request)
+    {
+        Auth::logout();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
+        // $request->session()->flush();
+        return redirect('/login');
+    }
+
+    public function login_post(Request $request)
+    {
         $input = $request->all();
-   
+
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
-        ]); 
+        ]);
+
+
 
         // Admin=0, Agent=1, Client=2
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-        { 
+        if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             // dd(auth()->user());
-            if (auth()->user()->role == 0) {
+            if (auth()->user()->role == 'admin') {
                 return redirect()->route('admin.dashboard');
-            }
-            elseif (auth()->user()->role == 1 && auth()->user()->account_is_active == 1) {
+                // dd(auth()->user()->role);
+            } elseif (auth()->user()->role == 'agent' && auth()->user()->account_is_active == 1) {
                 // dd('sss');
                 return redirect()->route('home');
-            }
-            elseif (auth()->user()->role == 2 && auth()->user()->account_is_active == 1) {
+            } elseif (auth()->user()->role == 'client' && auth()->user()->account_is_active == 1) {
                 // dd('sss');
-                return redirect()->route('home');
+                return redirect()->route('client.dashboard');
+            } else {
+                return redirect()->back()->with('error', 'Your Account was deactivated from our system');
             }
-            else{
-                return redirect()->back()->with('error','Your Account was deactivated from our system');
-            }
-        }else{
+        } else {
             // dd(auth()->user());
-            return redirect()->back()->with('error','Invalid email or password.');
+            return redirect()->back()->with('error', 'Invalid email or password.');
         }
     }
 
-    public function pricing(){
-        $pricing = Packages::where('is_active',1)->get();
-        return view('pricing',get_defined_vars());
+    public function pricing()
+    {
+        $pricing = Packages::where('is_active', 1)->get();
+        return view('pricing', get_defined_vars());
     }
 }

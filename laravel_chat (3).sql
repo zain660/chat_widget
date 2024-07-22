@@ -1,0 +1,783 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Jul 18, 2024 at 12:55 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.3.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `laravel_chat`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `block_users`
+--
+
+CREATE TABLE `block_users` (
+  `id` bigint UNSIGNED NOT NULL,
+  `block_to` int NOT NULL,
+  `block_from` int NOT NULL,
+  `is_blocked` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat_convos`
+--
+
+CREATE TABLE `chat_convos` (
+  `id` bigint UNSIGNED NOT NULL,
+  `sender_id` int NOT NULL,
+  `reciever_id` int NOT NULL,
+  `message` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_blocked` int DEFAULT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chat_convos`
+--
+
+INSERT INTO `chat_convos` (`id`, `sender_id`, `reciever_id`, `message`, `is_blocked`, `file`, `created_at`, `updated_at`) VALUES
+(3, 1, 2, 'hi', NULL, '', '2024-04-15 13:18:34', '2024-04-22 03:02:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_apps`
+--
+
+CREATE TABLE `client_apps` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` int NOT NULL,
+  `app_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `app_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int NOT NULL DEFAULT '0' COMMENT '0=active, 1=deactivate',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `client_apps`
+--
+
+INSERT INTO `client_apps` (`id`, `user_id`, `app_name`, `app_key`, `website_url`, `status`, `created_at`, `updated_at`) VALUES
+(2, 3, 'testing_app', 'Dp4yBC7DeHSna0zp', 'https://testing-site.com', 0, '2024-07-08 05:58:44', '2024-07-08 05:58:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companies`
+--
+
+CREATE TABLE `companies` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `convo_sessions`
+--
+
+CREATE TABLE `convo_sessions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `lead_id` int NOT NULL,
+  `session` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crypto_payments`
+--
+
+CREATE TABLE `crypto_payments` (
+  `paymentID` bigint UNSIGNED NOT NULL,
+  `boxID` bigint UNSIGNED NOT NULL DEFAULT '0',
+  `boxType` enum('paymentbox','captchabox') NOT NULL,
+  `orderID` varchar(50) NOT NULL DEFAULT '',
+  `userID` varchar(50) NOT NULL DEFAULT '',
+  `countryID` varchar(3) NOT NULL DEFAULT '',
+  `coinLabel` varchar(6) NOT NULL DEFAULT '',
+  `amount` double(20,8) NOT NULL DEFAULT '0.00000000',
+  `amountUSD` double(20,8) NOT NULL DEFAULT '0.00000000',
+  `unrecognised` tinyint UNSIGNED NOT NULL DEFAULT '0',
+  `addr` varchar(34) NOT NULL DEFAULT '',
+  `txID` char(64) NOT NULL DEFAULT '',
+  `txDate` datetime DEFAULT NULL,
+  `txConfirmed` tinyint UNSIGNED NOT NULL DEFAULT '0',
+  `txCheckDate` datetime DEFAULT NULL,
+  `processed` tinyint UNSIGNED NOT NULL DEFAULT '0',
+  `processedDate` datetime DEFAULT NULL,
+  `recordCreated` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `groups`
+--
+
+CREATE TABLE `groups` (
+  `id` bigint UNSIGNED NOT NULL,
+  `group_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_thumb` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_host` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_privacy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_msg_nam` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_last_message` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `groups`
+--
+
+INSERT INTO `groups` (`id`, `group_name`, `group_thumb`, `group_host`, `group_privacy`, `last_msg_nam`, `group_last_message`, `created_at`, `updated_at`) VALUES
+(5, 'snsbn', '1712487938Laravel.png', '2', NULL, 'Deborah Levine', 'nmdn', '2024-04-07 06:05:38', '2024-04-07 06:34:07'),
+(6, 'Alice Moore', '1713134655Laravel.png', '4', NULL, 'Jasper Garrison', 'Hi everyone', '2024-04-14 17:44:15', '2024-04-14 17:45:11'),
+(7, 'dsbnd', '1713207636Laravel.png', '1', NULL, '', NULL, '2024-04-15 14:00:36', '2024-04-15 14:00:36'),
+(8, 'dsbndb', '1713207777Laravel.png', '1', NULL, 'System admin', 'bnb', '2024-04-15 14:02:57', '2024-04-15 15:11:49'),
+(9, 'Testing demo', '1713773043GiClwgMY7JIIYG2.webp', '1', NULL, '', NULL, '2024-04-22 03:04:03', '2024-04-22 03:04:03'),
+(10, 'testing demo 2', '1713773107GiClwgMY7JIIYG2.webp', '1', NULL, '', NULL, '2024-04-22 03:05:07', '2024-04-22 03:05:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_participants`
+--
+
+CREATE TABLE `group_participants` (
+  `id` bigint UNSIGNED NOT NULL,
+  `group_id` int NOT NULL,
+  `participant_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `group_participants`
+--
+
+INSERT INTO `group_participants` (`id`, `group_id`, `participant_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, '2024-03-20 07:41:53', '2024-03-20 07:41:53'),
+(2, 2, 3, '2024-03-20 08:27:48', '2024-03-20 08:27:48'),
+(3, 3, 3, '2024-03-20 08:28:07', '2024-03-20 08:28:07'),
+(4, 3, 1, '2024-03-20 08:28:14', '2024-03-20 08:28:14'),
+(5, 3, 2, '2024-03-20 08:28:15', '2024-03-20 08:28:15'),
+(6, 4, 3, '2024-03-21 07:44:36', '2024-03-21 07:44:36'),
+(7, 4, 2, '2024-03-21 07:44:42', '2024-03-21 07:44:42'),
+(8, 5, 2, '2024-04-07 06:05:38', '2024-04-07 06:05:38'),
+(9, 6, 4, '2024-04-14 17:44:15', '2024-04-14 17:44:15'),
+(10, 7, 1, '2024-04-15 14:00:36', '2024-04-15 14:00:36'),
+(11, 8, 1, '2024-04-15 14:02:57', '2024-04-15 14:02:57'),
+(12, 8, 2, '2024-04-15 14:03:43', '2024-04-15 14:03:43'),
+(13, 8, 3, '2024-04-15 14:03:44', '2024-04-15 14:03:44'),
+(14, 8, 4, '2024-04-15 14:03:44', '2024-04-15 14:03:44'),
+(15, 8, 5, '2024-04-15 14:03:45', '2024-04-15 14:03:45'),
+(16, 8, 6, '2024-04-15 14:03:46', '2024-04-15 14:03:46'),
+(17, 9, 1, '2024-04-22 03:04:03', '2024-04-22 03:04:03'),
+(18, 10, 1, '2024-04-22 03:05:08', '2024-04-22 03:05:08');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leads`
+--
+
+CREATE TABLE `leads` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `init_message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `web_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0=active, 1=inactive',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `leads`
+--
+
+INSERT INTO `leads` (`id`, `name`, `email`, `init_message`, `phone`, `country`, `state`, `city`, `web_url`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Tina lopes', 'haddoud.amine@hotmail.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 10:35:29', '2024-07-16 10:35:29'),
+(2, 'Tina lopes', 'haddoud.amine@hotmail.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 11:25:43', '2024-07-16 11:25:43'),
+(3, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 11:28:46', '2024-07-16 11:28:46'),
+(4, 'Tina lopes', 'daliqukop@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 11:29:31', '2024-07-16 11:29:31'),
+(5, 'Tina lopes', 'daliqukop@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 11:52:34', '2024-07-16 11:52:34'),
+(6, 'Tina lopes', 'gudulafyv@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 12:11:56', '2024-07-16 12:11:56'),
+(7, 'zain malik', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 12:20:07', '2024-07-16 12:20:07'),
+(8, 'zain malik', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 12:20:53', '2024-07-16 12:20:53'),
+(9, 'Tina lopes', 'daliqukop@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:26:12', '2024-07-16 13:26:12'),
+(10, 'Brenda Herman', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:27:56', '2024-07-16 13:27:56'),
+(11, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:42:32', '2024-07-16 13:42:32'),
+(12, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:43:21', '2024-07-16 13:43:21'),
+(13, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:44:05', '2024-07-16 13:44:05'),
+(14, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:44:47', '2024-07-16 13:44:47'),
+(15, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:45:48', '2024-07-16 13:45:48'),
+(16, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:46:21', '2024-07-16 13:46:21'),
+(17, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:46:42', '2024-07-16 13:46:42'),
+(18, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:48:29', '2024-07-16 13:48:29'),
+(19, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:49:19', '2024-07-16 13:49:19'),
+(20, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:49:32', '2024-07-16 13:49:32'),
+(21, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 13:59:44', '2024-07-16 13:59:44'),
+(22, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:00:40', '2024-07-16 14:00:40'),
+(23, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:01:23', '2024-07-16 14:01:23'),
+(24, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:02:19', '2024-07-16 14:02:19'),
+(25, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:09:46', '2024-07-16 14:09:46'),
+(26, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:10:01', '2024-07-16 14:10:01'),
+(27, 'Tina lopes', 'haddoud.amine@hotmail.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:12:11', '2024-07-16 14:12:11'),
+(28, 'Tina lopes', 'haddoud.amine@hotmail.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:12:59', '2024-07-16 14:12:59'),
+(29, 'Tina lopes', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:13:21', '2024-07-16 14:13:21'),
+(30, 'Tina lopes', 'gudulafyv@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:14:13', '2024-07-16 14:14:13'),
+(31, 'bn', 'xogyf@mailinator.com', 'Type your message...', '+1 (888) 885-5552', NULL, NULL, NULL, 'file:///C:/Users/AA/Documents/demo%20website/index.html', '0', '2024-07-16 14:34:58', '2024-07-16 14:34:58'),
+(32, 'Zain Malik', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-16 14:40:30', '2024-07-16 14:40:30'),
+(33, 'Zain Malik', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-16 14:44:11', '2024-07-16 14:44:11'),
+(34, 'Zain Malik', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-16 14:46:48', '2024-07-16 14:46:48'),
+(35, 'Zain Malik', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-16 15:51:25', '2024-07-16 15:51:25'),
+(36, 'Zain Malik', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-16 15:54:39', '2024-07-16 15:54:39'),
+(37, 'bn', 'imzainmalik1230@gmail.com', 'Type your message...', '03402717629', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-17 05:57:30', '2024-07-17 05:57:30'),
+(38, 'Mikayla Patton', 'dosyhan@mailinator.com', 'Laboris possimus ex', '+1 (894) 769-5299', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-17 06:04:33', '2024-07-17 06:04:33'),
+(39, 'Malik Charles', 'coda@mailinator.com', 'Tempore dignissimos', '+1 (591) 333-2971', NULL, NULL, NULL, 'http://localhost/demo%20website/', '0', '2024-07-18 07:13:10', '2024-07-18 07:13:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2019_05_03_000001_create_customer_columns', 1),
+(4, '2019_05_03_000002_create_subscriptions_table', 1),
+(5, '2019_05_03_000003_create_subscription_items_table', 1),
+(6, '2019_08_19_000000_create_failed_jobs_table', 1),
+(7, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(8, '2022_05_26_185121_create_chat_convos_table', 1),
+(9, '2022_05_26_185131_create_group_participants_table', 1),
+(10, '2022_05_26_185412_create_groups_table', 1),
+(11, '2022_06_01_174620_create_block_users_table', 1),
+(12, '2022_06_04_101434_create_plan_subscriptions_table', 1),
+(13, '2022_06_23_164948_create_packages_table', 1),
+(14, '2022_06_26_075814_create_subscribeds_table', 1),
+(15, '2024_06_23_063601_create_companies_table', 2),
+(16, '2021_08_15_113006_create_crypto_payments_table', 3),
+(17, '2024_07_04_133330_create_client_apps_table', 3),
+(19, '2024_07_04_133451_create_widget_settings_table', 4),
+(20, '2024_07_15_123352_create_leads_table', 5),
+(21, '2024_07_16_192132_create_convo_sessions_table', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages`
+--
+
+CREATE TABLE `packages` (
+  `id` bigint UNSIGNED NOT NULL,
+  `pacakge_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pacakge_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pacakge_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pacakge_valid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plan_subscriptions`
+--
+
+CREATE TABLE `plan_subscriptions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `package_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `package_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `package_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_messages` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscribeds`
+--
+
+CREATE TABLE `subscribeds` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` int NOT NULL,
+  `package_id` int NOT NULL,
+  `is_active` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscriptions`
+--
+
+CREATE TABLE `subscriptions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `trial_ends_at` timestamp NULL DEFAULT NULL,
+  `ends_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscription_items`
+--
+
+CREATE TABLE `subscription_items` (
+  `id` bigint UNSIGNED NOT NULL,
+  `subscription_id` bigint UNSIGNED NOT NULL,
+  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_product` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quantity` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint UNSIGNED NOT NULL,
+  `role` int NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dob` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `device_token` longtext COLLATE utf8mb4_unicode_ci,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_is_active` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm_last_four` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trial_ends_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `role`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `phone`, `website`, `address`, `dob`, `device_token`, `remember_token`, `account_is_active`, `created_at`, `updated_at`, `stripe_id`, `pm_type`, `pm_last_four`, `trial_ends_at`) VALUES
+(1, 1, 'System admin', 'admin@admin.com', '1711212831375828667_773247351240160_2649403030959137565_n.jpg', NULL, '$2y$10$lu1fkmZb.igz9nt8RosjhuvHCNJyhLkRSVkUsrbaM9h/5Js3eCF.u', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 1, '2024-03-18 07:43:49', '2024-04-22 03:06:22', NULL, NULL, NULL, NULL),
+(2, 0, 'Deborah Levine', 'xogyf@mailinator.com', NULL, NULL, '$2y$10$lu1fkmZb.igz9nt8RosjhuvHCNJyhLkRSVkUsrbaM9h/5Js3eCF.u', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', '8YSxBmIK8D5UGUHPmUXugezsRujppRoQZWBSVHzTKjdnYvNcoeR3HQIHbFFJ', 1, '2024-03-18 08:03:34', '2024-04-17 01:58:29', NULL, NULL, NULL, NULL),
+(3, 2, 'Elijah', 'gudulafyccv@mailinator.com', '1711026724375828667_773247351240160_2649403030959137565_n.jpg', NULL, '$2y$10$lu1fkmZb.igz9nt8RosjhuvHCNJyhLkRSVkUsrbaM9h/5Js3eCF.u', '+1 (778) 482-9682', 'https://www.poc.mobi', 'Minim nihil suscipit', '1996-11-03', 'eGWFF8GMIb2piCjfBwp0LT:APA91bH_SCVJH68Jm2rPJInxf8vfOQ-4FILtK20Vu5EZHcZVgmjSwo5H5vtL7CohSj8naxqjou8UZ_FqP7xniL3xgVSMBQniQAnlhM8CUYAnqE5M8v3ejbHV3J24JBPkC11-_YPToklk', '77Nnx6ke5aVotY4XJzxvak9p8EVgTGeWqVAu9l9l7HlaKrGlP2iInn78QKaS', 1, '2024-03-18 08:06:16', '2024-07-17 05:44:07', NULL, NULL, NULL, NULL),
+(4, 0, 'Jasper Garrison', 'pokut@mailinator.com', NULL, NULL, '$2y$10$L/enb4rBOS2uop9C4N9O5.KV2NF4ZseCCsVMYixmP/EFmsV5M39ie', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-04-14 17:43:45', '2024-04-14 17:47:08', NULL, NULL, NULL, NULL),
+(5, 0, 'Colleen Mosley', 'mujituqi@mailinator.com', 'avatar.png', NULL, '$2y$10$mY2vFcRwl6OFEtlFyYLwheIMOYcejCpwPdB1UMqQEuO0Tiu7vrL/y', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-04-14 17:50:33', '2024-04-14 17:51:20', NULL, NULL, NULL, NULL),
+(6, 0, 'Lisandra Doyle', 'pubum@mailinator.com', 'avatar.png', NULL, '$2y$10$4Et4Ca2HsIVWtQwKYQtfs.K4ujMdcjw1U8GxCUFrju2sMYVe.jyDC', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-04-14 17:51:44', '2024-04-14 17:59:13', NULL, NULL, NULL, NULL),
+(7, 0, 'Adele Weiss', 'jugepafupy@mailinator.com', 'avatar.png', NULL, '$2y$10$.m1kZJY9Kak7QiOQZBbJVOMS.iRMGmZbRWFyYhR8uqR394C0wrpdG', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-04-22 02:50:29', '2024-04-22 02:50:29', NULL, NULL, NULL, NULL),
+(8, 0, 'Sydney Douglas', 'sigynasa@mailinator.com', 'avatar.png', NULL, '$2y$10$ahegHxMtAeifWM.g3oxMhu9AkdN5Od5IHZByLXswA/vXKrq8JffOm', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-04-22 02:52:42', '2024-04-22 02:53:41', NULL, NULL, NULL, NULL),
+(9, 0, 'Quyn Cochran', 'velys@mailinator.com', 'avatar.png', NULL, '$2y$10$mmrdB4GB/V5q8sC/fjTaS.U7bKalXLGdGQA61bKsZlRtCoU3a0VsC', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-06-09 17:00:29', '2024-06-09 17:00:49', NULL, NULL, NULL, NULL),
+(10, 0, 'Cora Bruce', 'vuko@mailinator.com', 'avatar.png', NULL, '$2y$10$04/t6X0iI9XLjHLJGl/LHutFndsY7K7xxaSPUVhj3Ot0NQXEZsWFu', NULL, NULL, NULL, NULL, 'czsN_P9YNDTbP0rdYKd90Q:APA91bFeBGz2qbYRepTfboYMwutpa978Qb6vt_F4GVH3PnQA8BsWeldnV1frky-pM1D-Ju8n5lReu9i2SpFG06E381CT2Vz5Az-kKKQQavkIs4JdGtO_yx9mJwmk0B61py83lGepgqix', NULL, 0, '2024-06-09 17:04:20', '2024-06-09 17:04:32', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `widget_settings`
+--
+
+CREATE TABLE `widget_settings` (
+  `id` bigint UNSIGNED NOT NULL,
+  `app_id` int NOT NULL,
+  `chat_box_color` int NOT NULL,
+  `chat_box_height` int NOT NULL,
+  `chat_box_width` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `block_users`
+--
+ALTER TABLE `block_users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `chat_convos`
+--
+ALTER TABLE `chat_convos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `client_apps`
+--
+ALTER TABLE `client_apps`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `companies`
+--
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `convo_sessions`
+--
+ALTER TABLE `convo_sessions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `crypto_payments`
+--
+ALTER TABLE `crypto_payments`
+  ADD PRIMARY KEY (`paymentID`),
+  ADD UNIQUE KEY `key3` (`boxID`,`orderID`,`userID`,`txID`,`amount`,`addr`),
+  ADD KEY `boxID` (`boxID`),
+  ADD KEY `boxType` (`boxType`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `countryID` (`countryID`),
+  ADD KEY `orderID` (`orderID`),
+  ADD KEY `amount` (`amount`),
+  ADD KEY `amountUSD` (`amountUSD`),
+  ADD KEY `coinLabel` (`coinLabel`),
+  ADD KEY `unrecognised` (`unrecognised`),
+  ADD KEY `addr` (`addr`),
+  ADD KEY `txID` (`txID`),
+  ADD KEY `txDate` (`txDate`),
+  ADD KEY `txConfirmed` (`txConfirmed`),
+  ADD KEY `txCheckDate` (`txCheckDate`),
+  ADD KEY `processed` (`processed`),
+  ADD KEY `processedDate` (`processedDate`),
+  ADD KEY `recordCreated` (`recordCreated`),
+  ADD KEY `key1` (`boxID`,`orderID`),
+  ADD KEY `key2` (`boxID`,`orderID`,`userID`);
+
+--
+-- Indexes for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `group_participants`
+--
+ALTER TABLE `group_participants`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `leads`
+--
+ALTER TABLE `leads`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `packages`
+--
+ALTER TABLE `packages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `plan_subscriptions`
+--
+ALTER TABLE `plan_subscriptions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subscribeds`
+--
+ALTER TABLE `subscribeds`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `subscriptions_stripe_id_unique` (`stripe_id`),
+  ADD KEY `subscriptions_user_id_stripe_status_index` (`user_id`,`stripe_status`);
+
+--
+-- Indexes for table `subscription_items`
+--
+ALTER TABLE `subscription_items`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `subscription_items_subscription_id_stripe_price_unique` (`subscription_id`,`stripe_price`),
+  ADD UNIQUE KEY `subscription_items_stripe_id_unique` (`stripe_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_stripe_id_index` (`stripe_id`);
+
+--
+-- Indexes for table `widget_settings`
+--
+ALTER TABLE `widget_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `block_users`
+--
+ALTER TABLE `block_users`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `chat_convos`
+--
+ALTER TABLE `chat_convos`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `client_apps`
+--
+ALTER TABLE `client_apps`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `companies`
+--
+ALTER TABLE `companies`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `convo_sessions`
+--
+ALTER TABLE `convo_sessions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `crypto_payments`
+--
+ALTER TABLE `crypto_payments`
+  MODIFY `paymentID` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `group_participants`
+--
+ALTER TABLE `group_participants`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `leads`
+--
+ALTER TABLE `leads`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `packages`
+--
+ALTER TABLE `packages`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `plan_subscriptions`
+--
+ALTER TABLE `plan_subscriptions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subscribeds`
+--
+ALTER TABLE `subscribeds`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subscription_items`
+--
+ALTER TABLE `subscription_items`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `widget_settings`
+--
+ALTER TABLE `widget_settings`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -24,19 +24,20 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">SB Client <sup>2</sup></div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('client.dashboard')}}">
+                <div class="logo-image">
+                    <img src="{{ asset('assets/media/final-logo.png') }}">
+                </div>                
             </a>
+
+            {{-- <div class="mx-3">Client Dashboard</div> --}}
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('admin.dashboard')}}">
+                <a class="nav-link" href="{{route('client.dashboard')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -51,19 +52,10 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-users"></i>
+                <a class="nav-link" href="{{route('client.leads')}}">
+                    <i class="fas fa-code"></i>
                     <span>Leads</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Users Management</h6>
-                        <a class="collapse-item" href="{{route('admin.allusers')}}">All Users</a>
-                        <a class="collapse-item" href="{{route('admin.deactive_users')}}">Deactive Users</a>
-                        <a class="collapse-item" href="{{route('admin.all_active_users')}}">Active Users</a>
-                    </div>
-                </div>
+                </a> 
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('client.apps')}}">

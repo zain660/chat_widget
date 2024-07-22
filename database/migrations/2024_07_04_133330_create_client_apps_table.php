@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('app_name');
+            $table->foreignId('user_id');
             $table->string('app_key');
             $table->string('website_url');
             $table->integer('status')->default(0)->comment('0=active, 1=deactivate');

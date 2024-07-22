@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,4 +46,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected function role(): Attribute
+    {
+        return new Attribute(
+            /* Users: 0=>admin   , 1=>agent,  2=>client */
+            get: fn($value) => ["admin", "agent", "client"][$value],
+        );
+    }
+
+    public function clientApps(): HasMany
+    {
+        return $this->hasMany(ClientApp::class);
+    }
 }
